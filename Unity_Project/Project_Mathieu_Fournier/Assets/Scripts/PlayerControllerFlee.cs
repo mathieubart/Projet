@@ -4,21 +4,16 @@ using UnityEngine;
 
 public class PlayerControllerFlee : MonoBehaviour
 {
+#region variables
     public float m_Speed = 10f;
     public float m_RotationSpeed = 10f;
 
     private bool m_IsGrabbed;
-
-	public bool IsGrabbed
-	{ 
-		get{return m_IsGrabbed;} 
-		set{m_IsGrabbed = value;}
-	}
-	
     private float m_RotationStep;
     private Vector3 m_NewDir;
     private Vector3 m_Direction;
     private Rigidbody m_Rigid;
+#endregion
 
     private void Start()
     {
@@ -26,12 +21,49 @@ public class PlayerControllerFlee : MonoBehaviour
         m_Rigid = GetComponent<Rigidbody>();
     }
 
-
     private void Update()
     {
-		m_Direction = Vector3.zero;
+        SetDirection();
+        Rotate();
+    }
 
-        if (!m_IsGrabbed)
+    private void FixedUpdate()
+    {
+        if (m_Direction != Vector3.zero)
+        {
+            Move();
+        }
+    }
+
+#region Functions
+    public void Move()
+    {
+        float velocityY = m_Rigid.velocity.y;
+        Vector3 forwardXZ = Vector3.zero;
+
+        forwardXZ = transform.forward * m_Speed;
+        forwardXZ.y = velocityY;
+        m_Rigid.velocity = forwardXZ;
+    }
+
+    public void Hide()
+    {
+        GetComponent<Renderer>().enabled = false;
+        m_IsGrabbed = true;
+    }
+
+    public void UnHide()
+    {
+        GetComponent<Renderer>().enabled = true;
+        m_IsGrabbed = false;
+    }
+
+    //Get Input And Set Direction
+    public void SetDirection()
+    {
+        m_Direction = Vector3.zero;
+
+        if(!m_IsGrabbed)
         {
             if (Input.GetKey(KeyCode.W))
             {
@@ -49,36 +81,22 @@ public class PlayerControllerFlee : MonoBehaviour
             {
                 m_Direction += Vector3.right;
             }
-
-            m_RotationStep = m_RotationSpeed * Time.deltaTime;
-            m_NewDir = Vector3.RotateTowards(transform.forward, m_Direction, m_RotationStep, 0.0f);
-
-            if (m_Direction != Vector3.zero)
-            {
-                transform.rotation = Quaternion.LookRotation(m_NewDir, transform.up);
-            }
-            else
-            {
-                m_Rigid.angularVelocity = Vector3.zero;
-            }
         }
     }
 
-    private void FixedUpdate()
+    public void Rotate()
     {
+        m_RotationStep = m_RotationSpeed * Time.deltaTime;
+        m_NewDir = Vector3.RotateTowards(transform.forward, m_Direction, m_RotationStep, 0.0f);
+
         if (m_Direction != Vector3.zero)
         {
-            Move();
+            transform.rotation = Quaternion.LookRotation(m_NewDir, transform.up);
+        }
+        else
+        {
+            m_Rigid.angularVelocity = Vector3.zero;
         }
     }
-
-    public void Move()
-    {
-        float velocityY = m_Rigid.velocity.y;
-        Vector3 forwardXZ = Vector3.zero;
-
-        forwardXZ = transform.forward * m_Speed;
-        forwardXZ.y = velocityY;
-        m_Rigid.velocity = forwardXZ;
-    }
+#endregion
 }
