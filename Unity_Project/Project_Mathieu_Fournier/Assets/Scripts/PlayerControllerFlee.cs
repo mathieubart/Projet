@@ -4,21 +4,24 @@ using UnityEngine;
 
 public class PlayerControllerFlee : MonoBehaviour
 {
-#region variables
     public float m_Speed = 10f;
     public float m_RotationSpeed = 10f;
+    public Transform m_Raycaster;
+    public PlayerFleeUI m_PointText;
 
     private bool m_IsGrabbed;
+    private int m_Points = 0;
     private float m_RotationStep;
     private Vector3 m_NewDir;
     private Vector3 m_Direction;
     private Rigidbody m_Rigid;
-#endregion
+
 
     private void Start()
     {
         m_Direction = Vector3.zero;
         m_Rigid = GetComponent<Rigidbody>();
+        m_PointText.SetText(m_Points);
     }
 
     private void Update()
@@ -35,7 +38,16 @@ public class PlayerControllerFlee : MonoBehaviour
         }
     }
 
-#region Functions
+    private void OnTriggerEnter(Collider aCol)
+    {
+        if(aCol.tag == "Token")
+        {
+            aCol.gameObject.SetActive(false);
+            m_Points++;
+            m_PointText.SetText(m_Points);
+        }
+    }
+
     public void Move()
     {
         float velocityY = m_Rigid.velocity.y;
@@ -63,7 +75,7 @@ public class PlayerControllerFlee : MonoBehaviour
     {
         m_Direction = Vector3.zero;
 
-        if(!m_IsGrabbed)
+        if(!m_IsGrabbed && IsGrounded())
         {
             if (Input.GetKey(KeyCode.W))
             {
@@ -84,7 +96,17 @@ public class PlayerControllerFlee : MonoBehaviour
         }
     }
 
-    public void Rotate()
+    private bool IsGrounded()
+    {
+        bool isGrounded = false;
+        if(!isGrounded)
+        {
+            isGrounded = Physics.Raycast(m_Raycaster.position, -transform.up, 0.52f);
+        }
+        return isGrounded;
+    }
+
+    private void Rotate()
     {
         m_RotationStep = m_RotationSpeed * Time.deltaTime;
         m_NewDir = Vector3.RotateTowards(transform.forward, m_Direction, m_RotationStep, 0.0f);
@@ -98,5 +120,4 @@ public class PlayerControllerFlee : MonoBehaviour
             m_Rigid.angularVelocity = Vector3.zero;
         }
     }
-#endregion
 }

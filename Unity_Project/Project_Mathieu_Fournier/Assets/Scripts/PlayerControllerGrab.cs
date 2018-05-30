@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PlayerControllerGrab : MonoBehaviour
 {
-#region variables
     public float m_Speed = 10f;
     public float m_RotationSpeed = 10f;
     public float m_ThrowForce = 250f;
@@ -21,7 +20,6 @@ public class PlayerControllerGrab : MonoBehaviour
     private Vector3 m_GrabOffset = new Vector3(0f, 1.8f, 0f);
     private Rigidbody m_Rigid;
     private GameObject m_GrabAbleObject;
-#endregion
 
     private void Start()
     {
@@ -75,8 +73,6 @@ public class PlayerControllerGrab : MonoBehaviour
             }
         }
     }
-
-#region Functions
 
     public void Move()
     {
@@ -176,6 +172,4 @@ public class PlayerControllerGrab : MonoBehaviour
 
         m_HoldSomething = false;
     }
-
-#endregion
 }
