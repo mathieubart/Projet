@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+//using Cinemachine;
 
 public class PlayerControllerFlee : MonoBehaviour
 {
@@ -8,8 +9,10 @@ public class PlayerControllerFlee : MonoBehaviour
     public float m_RotationSpeed = 10f;
     public Transform m_Raycaster;
     public PlayerFleeUI m_PointText;
+    //public Cinemachine 
 
-    private bool m_IsGrabbed;
+    [HideInInspector]
+    public bool m_IsGrabbed {get; set;}
     private int m_Points = 0;
     private float m_RotationStep;
     private Vector3 m_NewDir;
@@ -61,13 +64,11 @@ public class PlayerControllerFlee : MonoBehaviour
     public void Hide()
     {
         GetComponent<Renderer>().enabled = false;
-        m_IsGrabbed = true;
     }
 
     public void UnHide()
     {
         GetComponent<Renderer>().enabled = true;
-        m_IsGrabbed = false;
     }
 
     //Get Input And Set Direction
@@ -79,19 +80,15 @@ public class PlayerControllerFlee : MonoBehaviour
         {
             if (Input.GetKey(KeyCode.W))
             {
-                m_Direction += Vector3.forward;
-            }
-            if (Input.GetKey(KeyCode.S))
-            {
-                m_Direction -= Vector3.forward;
+                m_Direction += transform.forward;
             }
             if (Input.GetKey(KeyCode.A))
             {
-                m_Direction -= Vector3.right;
+                m_Direction -= transform.right;
             }
             if (Input.GetKey(KeyCode.D))
             {
-                m_Direction += Vector3.right;
+                m_Direction += transform.right;
             }
         }
     }

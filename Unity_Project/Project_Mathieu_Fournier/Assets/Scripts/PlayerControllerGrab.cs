@@ -91,19 +91,15 @@ public class PlayerControllerGrab : MonoBehaviour
 
         if (Input.GetKey(KeyCode.UpArrow))
         {
-            m_Direction += Vector3.forward;
-        }
-        if (Input.GetKey(KeyCode.DownArrow))
-        {
-            m_Direction -= Vector3.forward;
+            m_Direction += transform.forward;
         }
         if (Input.GetKey(KeyCode.LeftArrow))
         {
-            m_Direction -= Vector3.right;
+            m_Direction -= transform.right;
         }
         if (Input.GetKey(KeyCode.RightArrow))
         {
-            m_Direction += Vector3.right;
+            m_Direction += transform.right;
         }
     }
 
@@ -142,6 +138,7 @@ public class PlayerControllerGrab : MonoBehaviour
         if (m_GrabAbleObject.name == "CharacterFlee")
         {
             m_GrabAbleObject.GetComponent<PlayerControllerFlee>().Hide();
+            m_GrabAbleObject.GetComponent<PlayerControllerFlee>().m_IsGrabbed = true;
             m_FalseGrabbedCharacter.SetActive(true);
         }
         else if (m_GrabAbleObject.tag == "GrabAble")
@@ -159,6 +156,7 @@ public class PlayerControllerGrab : MonoBehaviour
         if (m_GrabAbleObject.name == "CharacterFlee")
         {
             m_GrabAbleObject.GetComponent<PlayerControllerFlee>().UnHide();
+            m_GrabAbleObject.GetComponent<PlayerControllerFlee>().m_IsGrabbed = false;
             m_FalseGrabbedCharacter.SetActive(false);
         }
         else if (m_GrabAbleObject.tag == "GrabAble")

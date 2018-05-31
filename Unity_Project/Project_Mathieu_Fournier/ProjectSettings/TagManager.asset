@@ -19,10 +19,10 @@ TagManager:
   - ExitZoneCollider
   - PlayerGrab
   - Token
-  - 
-  - 
-  - 
-  - 
+  - P1Cam
+  - P2Cam
+  - P3Cam
+  - P4Cam
   - 
   - 
   - 
