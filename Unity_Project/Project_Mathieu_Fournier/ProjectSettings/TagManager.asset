@@ -6,6 +6,7 @@ TagManager:
   tags:
   - GrabAble
   - Token
+  - Jar
   layers:
   - Default
   - TransparentFX
@@ -23,8 +24,8 @@ TagManager:
   - P2Cam
   - P3Cam
   - P4Cam
-  - 
-  - 
+  - Menu_UI
+  - Jar
   - 
   - 
   - 
