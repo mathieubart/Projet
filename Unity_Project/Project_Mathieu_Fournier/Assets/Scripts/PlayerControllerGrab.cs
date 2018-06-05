@@ -22,6 +22,8 @@ public class PlayerControllerGrab : MonoBehaviour
     private Rigidbody m_Rigid;
     private GameObject m_GrabAbleObject;
     private GameObject m_PlayerFlee;
+    private GameObject m_HeldObject;
+    private List<GameObject> m_GrabablePots = new List<GameObject>();
 
     private void Start()
     {
@@ -38,7 +40,17 @@ public class PlayerControllerGrab : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-			Action();
+	        if (m_GrabAbleObject != null)
+            {
+                if (m_HoldSomething)
+                {
+                    Throw();
+                }
+                else
+                {
+                    Grab();
+                }
+            }
         }
     }
 
@@ -47,33 +59,6 @@ public class PlayerControllerGrab : MonoBehaviour
         if (m_Direction != Vector3.zero && IsNothingInFrontOfPlayer())
         {
             Move();
-        }
-    }
-
-    private void OnTriggerEnter(Collider aCol)
-    {
-        if (aCol.name == "CharacterFlee")
-        {
-            m_GrabAbleObject = aCol.gameObject;
-        }
-        else if (aCol.name != "CharacterFlee" && aCol.tag == "Jar")
-        {
-            m_GrabAbleObject = aCol.gameObject;
-        }
-    }
-
-    private void OnTriggerExit(Collider aCol)
-    {
-        if (!m_HoldSomething)
-        {
-            if (m_GrabAbleObject != null && m_GrabAbleObject.name != "CharacterFlee" && aCol.tag == "Jar")
-            {
-                m_GrabAbleObject = null;
-            }
-            else if (aCol.name == "CharacterFlee")
-            {
-                m_GrabAbleObject = null;
-            }
         }
     }
 
@@ -137,21 +122,6 @@ public class PlayerControllerGrab : MonoBehaviour
         }
     }
 
-    public void Action()
-    {
-        if (m_GrabAbleObject != null)
-        {
-            if (m_HoldSomething)
-            {
-                Throw();
-            }
-            else
-            {
-                Grab();
-            }
-        }
-    }
-
     public void Grab()
     {
         if (m_GrabAbleObject.name == "CharacterFlee")
@@ -159,20 +129,24 @@ public class PlayerControllerGrab : MonoBehaviour
             m_GrabAbleObject.GetComponent<PlayerControllerFlee>().Hide(gameObject.transform, gameObject.layer);
             m_GrabAbleObject.GetComponent<PlayerControllerFlee>().m_IsGrabbed = true;
             m_FalseGrabbedCharacter.SetActive(true);
+
+            m_HeldObject = m_GrabAbleObject;
         }
         else if (m_GrabAbleObject.tag == "Jar")
         {
             m_GrabAbleObject.GetComponent<Renderer>().enabled = false;
+            m_FalseGrabbedJar.SetActive(true);
+
             if(m_PlayerFlee.GetComponent<PlayerControllerFlee>().m_IsInAJar)
             {
                 m_PlayerFlee.GetComponent<PlayerControllerFlee>().SetCameraTarget(gameObject.transform);
                 m_PlayerFlee.GetComponent<PlayerControllerFlee>().m_Jar = m_FalseGrabbedJar.transform;
             }
-            m_FalseGrabbedJar.SetActive(true);
-        }
 
-        m_HoldSomething = true;
+            m_HeldObject = m_GrabAbleObject;
+        }
     }
+
 
     public void Throw()
     {
@@ -198,6 +172,70 @@ public class PlayerControllerGrab : MonoBehaviour
         m_GrabAbleObject.transform.position = transform.position + m_GrabOffset;
         m_GrabAbleObject.GetComponent<Rigidbody>().AddForce((transform.forward * (m_ThrowForce + (actualSpeed*25f))) + (transform.up * m_ThrowForce));
 
-        m_HoldSomething = false;
+        m_HeldObject = null;
+    }
+
+    //Spherecast to find all the pots inside grabable range. return list of pots gameobject
+    private void RaycastGrabablePots()
+    {
+        m_GrabablePots.Clear();
+        RaycastHit[] spherecastHifos;
+        spherecastHifos = Physics.SphereCastAll(transform.position, 2f, transform.position, 0f, LayerMask.GetMask("Jar"));
+        
+        for (int i = 0; i < spherecastHifos.Length; i++)
+        {
+            m_GrabablePots.Add(spherecastHifos[i].collider.gameObject);
+            Debug.Log(m_GrabablePots[i]);
+        }
+    }
+
+
+    //Take the array of object returned by the sphere cast and assign the closest pot.
+    private GameObject GetClosestPot()
+    {
+        GameObject closestPot = null;
+        float closestDistance = 100000f;
+        RaycastGrabablePots();
+
+        for (int i = 0; i < m_GrabablePots.Count; i++)
+        {
+            if(Vector3.Magnitude(m_GrabablePots[i].transform.position - transform.position) < closestDistance)
+            {
+                closestDistance = Vector3.Magnitude(m_GrabablePots[i].transform.position - transform.position);
+                closestPot = m_GrabablePots[i];
+            }
+        }
+
+        return closestPot;
+    }
+
+    private void OnTriggerEnter(Collider aCol)
+    {
+        //If the character hold nothing && the fleeing character isnt in range.
+        //Look for the closest grabable object.
+        if(m_HeldObject == null)
+        {
+            if (aCol.name == "CharacterFlee")
+            {
+                m_GrabAbleObject = aCol.gameObject;
+            }
+            else if (aCol.name != "CharacterFlee" && aCol.tag == "Jar")
+            {
+                m_GrabAbleObject = GetClosestPot();
+            }
+        }
+    }
+
+    private void OnTriggerExit(Collider aCol)
+    {
+        //If the character hold nothing && the fleeing character isnt in range.
+        // look for the closest grabable object.      
+        if (m_HeldObject == null)
+        {
+            if (m_GrabAbleObject != null && m_GrabAbleObject.name != "CharacterFlee")
+            {
+                m_GrabAbleObject = GetClosestPot();
+            }
+        }
     }
 }
