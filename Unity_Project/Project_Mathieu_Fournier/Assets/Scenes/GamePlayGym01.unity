@@ -480,7 +480,7 @@ GameObject:
   m_Component:
   - component: {fileID: 209822036}
   m_Layer: 0
-  m_Name: _______________UI______________
+  m_Name: ______________________UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -769,7 +769,7 @@ GameObject:
   m_Component:
   - component: {fileID: 292625273}
   m_Layer: 0
-  m_Name: ___________Characters___________
+  m_Name: ______________Characters
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2248,7 +2248,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1012530371}
   m_Layer: 0
-  m_Name: __________Game_Objects_________
+  m_Name: ___________Game_Objects
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2776,7 +2776,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4572685340440560, guid: 83b8e04819c4b48499a1611137c2289f, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -22
+      value: -18.41
       objectReference: {fileID: 0}
     - target: {fileID: 4572685340440560, guid: 83b8e04819c4b48499a1611137c2289f, type: 2}
       propertyPath: m_LocalPosition.y
@@ -2784,11 +2784,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4572685340440560, guid: 83b8e04819c4b48499a1611137c2289f, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 10
+      value: 16.67
       objectReference: {fileID: 0}
     - target: {fileID: 4572685340440560, guid: 83b8e04819c4b48499a1611137c2289f, type: 2}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4572685340440560, guid: 83b8e04819c4b48499a1611137c2289f, type: 2}
       propertyPath: m_LocalRotation.y
@@ -3636,7 +3636,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1505372182}
   m_Layer: 0
-  m_Name: _________Lights_Cameras_________
+  m_Name: __________Lights_Cameras
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4636,7 +4636,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1838823164}
   m_Layer: 0
-  m_Name: ___________Proto_Map___________
+  m_Name: _______________Proto_Map
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

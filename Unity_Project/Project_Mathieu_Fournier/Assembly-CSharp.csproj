@@ -105,6 +105,8 @@
      <Compile Include="Assets\Cinemachine\Timeline\CinemachineShot.cs" />
      <Compile Include="Assets\Cinemachine\Timeline\CinemachineTrack.cs" />
      <Compile Include="Assets\Scripts\ExitZone.cs" />
+     <Compile Include="Assets\Scripts\FollowGrabber.cs" />
+     <Compile Include="Assets\Scripts\Jar.cs" />
      <Compile Include="Assets\Scripts\PlayerControllerFlee.cs" />
      <Compile Include="Assets\Scripts\PlayerControllerGrab.cs" />
      <Compile Include="Assets\Scripts\PlayerFleeUI.cs" />

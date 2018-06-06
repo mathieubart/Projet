@@ -35,22 +35,18 @@ public class PlayerControllerGrab : MonoBehaviour
     private void Update()
     {
         SetDirection();
-
         Rotate();
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-	        if (m_GrabAbleObject != null)
+            if(m_HeldObject != null)
             {
-                if (m_HoldSomething)
-                {
-                    Throw();
-                }
-                else
-                {
-                    Grab();
-                }
+                Throw();
             }
+	        else if (m_GrabAbleObject != null)
+            {        
+                Grab();            
+            }      
         }
     }
 
@@ -79,7 +75,7 @@ public class PlayerControllerGrab : MonoBehaviour
         for (int i = 0; i < m_FrontRaycasters.Count; i++)
         {
             Ray frontRay = new Ray(m_FrontRaycasters[i].position, gameObject.transform.forward);
-            if(Physics.Raycast(frontRay, 0.75f))
+            if(Physics.Raycast(frontRay, 0.75f, LayerMask.NameToLayer("Default")))
             {
                 isNothingInFrontOfPlayer = false;
                 continue;
@@ -122,73 +118,18 @@ public class PlayerControllerGrab : MonoBehaviour
         }
     }
 
-    public void Grab()
-    {
-        if (m_GrabAbleObject.name == "CharacterFlee")
-        {
-            m_GrabAbleObject.GetComponent<PlayerControllerFlee>().Hide(gameObject.transform, gameObject.layer);
-            m_GrabAbleObject.GetComponent<PlayerControllerFlee>().m_IsGrabbed = true;
-            m_FalseGrabbedCharacter.SetActive(true);
-
-            m_HeldObject = m_GrabAbleObject;
-        }
-        else if (m_GrabAbleObject.tag == "Jar")
-        {
-            m_GrabAbleObject.GetComponent<Renderer>().enabled = false;
-            m_FalseGrabbedJar.SetActive(true);
-
-            if(m_PlayerFlee.GetComponent<PlayerControllerFlee>().m_IsInAJar)
-            {
-                m_PlayerFlee.GetComponent<PlayerControllerFlee>().SetCameraTarget(gameObject.transform);
-                m_PlayerFlee.GetComponent<PlayerControllerFlee>().m_Jar = m_FalseGrabbedJar.transform;
-            }
-
-            m_HeldObject = m_GrabAbleObject;
-        }
-    }
-
-
-    public void Throw()
-    {
-		float actualSpeed = Vector3.Magnitude(m_Rigid.velocity);
-
-        if (m_GrabAbleObject.name == "CharacterFlee")
-        {
-            m_GrabAbleObject.GetComponent<PlayerControllerFlee>().UnHide();
-            m_GrabAbleObject.GetComponent<PlayerControllerFlee>().m_IsGrabbed = false;
-            m_FalseGrabbedCharacter.SetActive(false);
-        }
-        else if (m_GrabAbleObject.tag == "Jar")
-        {
-            m_GrabAbleObject.GetComponent<Renderer>().enabled = true;
-            if(m_PlayerFlee.GetComponent<PlayerControllerFlee>().m_IsInAJar)
-            {
-                m_PlayerFlee.GetComponent<PlayerControllerFlee>().SetCameraTarget(m_GrabAbleObject.transform);
-                m_PlayerFlee.GetComponent<PlayerControllerFlee>().m_Jar = m_GrabAbleObject.transform;
-            }
-            m_FalseGrabbedJar.SetActive(false);
-        }
-
-        m_GrabAbleObject.transform.position = transform.position + m_GrabOffset;
-        m_GrabAbleObject.GetComponent<Rigidbody>().AddForce((transform.forward * (m_ThrowForce + (actualSpeed*25f))) + (transform.up * m_ThrowForce));
-
-        m_HeldObject = null;
-    }
-
-    //Spherecast to find all the pots inside grabable range. return list of pots gameobject
+        //Spherecast to find all the pots inside grabable range. return list of pots gameobject
     private void RaycastGrabablePots()
     {
         m_GrabablePots.Clear();
         RaycastHit[] spherecastHifos;
-        spherecastHifos = Physics.SphereCastAll(transform.position, 2f, transform.position, 0f, LayerMask.GetMask("Jar"));
+        spherecastHifos = Physics.SphereCastAll(transform.position, 2f, transform.up, 0.9f * transform.localScale.y, LayerMask.GetMask("Jar"));
         
         for (int i = 0; i < spherecastHifos.Length; i++)
         {
             m_GrabablePots.Add(spherecastHifos[i].collider.gameObject);
-            Debug.Log(m_GrabablePots[i]);
         }
     }
-
 
     //Take the array of object returned by the sphere cast and assign the closest pot.
     private GameObject GetClosestPot()
@@ -219,7 +160,7 @@ public class PlayerControllerGrab : MonoBehaviour
             {
                 m_GrabAbleObject = aCol.gameObject;
             }
-            else if (aCol.name != "CharacterFlee" && aCol.tag == "Jar")
+            else if (aCol.tag == "Jar")
             {
                 m_GrabAbleObject = GetClosestPot();
             }
@@ -231,11 +172,109 @@ public class PlayerControllerGrab : MonoBehaviour
         //If the character hold nothing && the fleeing character isnt in range.
         // look for the closest grabable object.      
         if (m_HeldObject == null)
-        {
+        { 
             if (m_GrabAbleObject != null && m_GrabAbleObject.name != "CharacterFlee")
-            {
+            {                   
                 m_GrabAbleObject = GetClosestPot();
             }
         }
     }
+
+    private void Grab()
+    {
+        if(m_GrabAbleObject.name == "CharacterFlee")
+        {
+            m_GrabAbleObject.GetComponent<PlayerControllerFlee>().OnHold(transform);
+            m_HeldObject = m_GrabAbleObject;
+            m_GrabAbleObject = null;
+        }
+        else if(m_GrabAbleObject.tag == "Jar")
+        {
+            m_GrabAbleObject.GetComponent<Jar>().OnHold(transform);
+            m_HeldObject = m_GrabAbleObject;
+            m_GrabAbleObject = null;
+        }
+    }
+
+    private void Throw()
+    {
+        float actualSpeed = Vector3.Magnitude(m_Rigid.velocity);
+
+        if(m_HeldObject.name == "CharacterFlee")
+        {
+            m_HeldObject.GetComponent<PlayerControllerFlee>().OnRelease();
+        }
+        else if(m_HeldObject.tag == "Jar")
+        {
+            m_HeldObject.GetComponent<Jar>().OnRelease();
+        }
+
+        m_HeldObject.GetComponent<Rigidbody>().AddForce((transform.forward * (m_ThrowForce + (actualSpeed * 25f))) + (transform.up * m_ThrowForce));
+
+        m_HeldObject = null;
+    }
+
+
+
+
+
+
+
+
+
+
+
+/* 
+    public void Grab()
+    {
+        if (m_GrabAbleObject.name == "CharacterFlee")
+        {
+            m_GrabAbleObject.GetComponent<PlayerControllerFlee>().Hide(gameObject.transform);
+            m_GrabAbleObject.GetComponent<PlayerControllerFlee>().m_IsGrabbed = true;
+            m_FalseGrabbedCharacter.SetActive(true);
+
+            m_HeldObject = m_GrabAbleObject;
+        }
+        else if (m_GrabAbleObject.tag == "Jar")
+        {
+            m_GrabAbleObject.GetComponent<Jar>().Hide();
+            m_FalseGrabbedJar.SetActive(true);
+
+            if(m_PlayerFlee.GetComponent<PlayerControllerFlee>().m_IsInAJar)
+            {
+                m_PlayerFlee.GetComponent<PlayerControllerFlee>().SetCameraTarget(gameObject.transform);
+                m_PlayerFlee.GetComponent<PlayerControllerFlee>().m_Jar = m_FalseGrabbedJar.transform;
+            }
+
+            m_HeldObject = m_GrabAbleObject;
+        }
+    }
+
+    public void Throw()
+    {
+		float actualSpeed = Vector3.Magnitude(m_Rigid.velocity);
+
+        if (m_GrabAbleObject.name == "CharacterFlee")
+        {
+            m_GrabAbleObject.GetComponent<PlayerControllerFlee>().UnHide();
+            m_GrabAbleObject.GetComponent<PlayerControllerFlee>().m_IsGrabbed = false;
+            m_FalseGrabbedCharacter.SetActive(false);
+        }
+        else if (m_GrabAbleObject.tag == "Jar")
+        {
+            m_GrabAbleObject.GetComponent<Jar>().UnHide();
+            if(m_PlayerFlee.GetComponent<PlayerControllerFlee>().m_IsInAJar)
+            {
+                m_PlayerFlee.GetComponent<PlayerControllerFlee>().SetCameraTarget(m_GrabAbleObject.transform);
+                m_PlayerFlee.GetComponent<PlayerControllerFlee>().m_Jar = m_GrabAbleObject.transform;
+            }
+            m_FalseGrabbedJar.SetActive(false);
+        }
+
+        m_GrabAbleObject.transform.position = transform.position + m_GrabOffset;
+        m_GrabAbleObject.GetComponent<Rigidbody>().AddForce((transform.forward * (m_ThrowForce + (actualSpeed*25f))) + (transform.up * m_ThrowForce));
+
+        m_HeldObject = null;
+    }
+*/
 }

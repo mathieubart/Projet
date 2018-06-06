@@ -5,51 +5,69 @@ using Cinemachine;
 
 public class PlayerControllerFlee : MonoBehaviour
 {
-    public float m_Speed = 10f;
-    public float m_RotationSpeed = 10f;
-    public Transform m_GroundRaycaster;
-    public PlayerFleeUI m_PointText;
-    public CinemachineFreeLook m_Cinemachine;
+    [SerializeField]
+    private float m_Speed = 10f;
+    [SerializeField]
+    private float m_RotationSpeed = 10f;
+    [SerializeField]
+    private Transform m_GroundRaycaster;
+    [SerializeField]
+    private PlayerFleeUI m_PointText;
+    [SerializeField]
+    private CinemachineFreeLook m_Cinemachine;
     [SerializeField]
     private List<Transform> m_FrontRaycasters = new List<Transform>();
 
     [HideInInspector]
-    public bool m_IsGrabbed {get; set;}
+    public bool m_HisHeld {get; set;}
     [HideInInspector]
     public bool m_IsInAJar {get; set;}
     private int m_Points = 0;
     private float m_RotationStep;
     private Vector3 m_NewDir;
     private Vector3 m_Direction;
+    private Vector3 m_Offset = new Vector3(0f, 0f, 0f);
     [HideInInspector]
     public Transform m_Jar;
+    private Transform m_Parent;
     private Rigidbody m_Rigid;
-    private LayerMask m_CollisionIgnoreLayer;
+
 
 
     private void Start()
     {
         m_Direction = Vector3.zero;
         m_Jar = null;
+        m_Parent = null;
         m_Rigid = GetComponent<Rigidbody>();
         m_PointText.SetText(m_Points);
     }
 
     private void Update()
     {
-        SetDirection();
-        Rotate();
+        if(m_Parent != null)
+        {
+            transform.position = m_Parent.transform.position + m_Offset;
+            transform.rotation = m_Parent.rotation;
+        }
+        else
+        {
+            SetDirection();
+            Rotate();
+        }
+
         if(Input.GetKeyDown(KeyCode.F) && m_Jar != null)
         {
             if(!m_IsInAJar)
             {
-                GetInsideJar();
+               // GetInsideJar();
+                OnHold(m_Jar);
                 m_IsInAJar = true;
             }
             else 
             {
-                Debug.Log("FFFF");
-                GetOutsideJar();
+               // GetOutsideJar();
+                OnRelease();
                 m_IsInAJar = false;
             }
         }
@@ -57,11 +75,13 @@ public class PlayerControllerFlee : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (m_Direction != Vector3.zero && IsNothingInFrontOfPlayer())
+        if (m_Direction != Vector3.zero && !RaycastPlayerForward())
         {
             Move();
         }
     }
+
+
 
     private void OnTriggerEnter(Collider aCol)
     {
@@ -95,46 +115,19 @@ public class PlayerControllerFlee : MonoBehaviour
         m_Rigid.velocity = forwardXZ;
     }
 
-    private bool IsNothingInFrontOfPlayer()
+    private void Rotate()
     {
-        bool isNothingInFrontOfPlayer = true;
+        m_RotationStep = m_RotationSpeed * Time.deltaTime;
+        m_NewDir = Vector3.RotateTowards(transform.forward, m_Direction, m_RotationStep, 0.0f);
 
-        for (int i = 0; i < m_FrontRaycasters.Count; i++)
+        if (m_Direction != Vector3.zero)
         {
-            Ray frontRay = new Ray(m_FrontRaycasters[i].position, gameObject.transform.forward);
-            if(Physics.Raycast(frontRay, 0.75f))
-            {
-                isNothingInFrontOfPlayer = false;
-                continue;
-            }
+            transform.rotation = Quaternion.LookRotation(m_NewDir, transform.up);
         }
-        return isNothingInFrontOfPlayer;
-    }
-
-    public void Hide(Transform a_cameraTarget, LayerMask a_CollisionIgnore)
-    {
-        m_CollisionIgnoreLayer = a_CollisionIgnore;
-        GetComponent<Renderer>().enabled = false;
-        Physics.IgnoreLayerCollision(gameObject.layer, m_CollisionIgnoreLayer, true);
-        SetCameraTarget(a_cameraTarget);
-    }
-
-    public void SetCameraTarget(Transform a_cameraTarget)
-    { 
-        if(a_cameraTarget != null)
+        else
         {
-            m_Cinemachine.m_Follow = a_cameraTarget;
-            m_Cinemachine.m_LookAt = a_cameraTarget;
+            m_Rigid.angularVelocity = Vector3.zero;
         }
-    }
-
-    public void UnHide()
-    {
-        GetComponent<Renderer>().enabled = true;
-        Physics.IgnoreLayerCollision(gameObject.layer, m_CollisionIgnoreLayer, false);
-
-        m_Cinemachine.m_Follow = gameObject.transform;
-        m_Cinemachine.m_LookAt = gameObject.transform;     
     }
 
     //Get Input And Set Direction
@@ -142,7 +135,7 @@ public class PlayerControllerFlee : MonoBehaviour
     {
         m_Direction = Vector3.zero;
 
-        if(!m_IsGrabbed && IsGrounded() && !m_IsInAJar)
+        if(!m_HisHeld && IsGrounded() && !m_IsInAJar)
         {
             if (Input.GetKey(KeyCode.W))
             {
@@ -164,37 +157,118 @@ public class PlayerControllerFlee : MonoBehaviour
         bool isGrounded = false;
         if(!isGrounded)
         {
-            isGrounded = Physics.Raycast(m_GroundRaycaster.position, -transform.up, 0.52f);
+            isGrounded = Physics.Raycast(m_GroundRaycaster.position + new Vector3(0f, 0.2f, 0f), -transform.up, 0.53f);
         }
         return isGrounded;
     }
 
-    private void Rotate()
+    private bool RaycastPlayerForward()
     {
-        m_RotationStep = m_RotationSpeed * Time.deltaTime;
-        m_NewDir = Vector3.RotateTowards(transform.forward, m_Direction, m_RotationStep, 0.0f);
+        bool raycastPlayerForward = false;
 
-        if (m_Direction != Vector3.zero)
+        for (int i = 0; i < m_FrontRaycasters.Count; i++)
         {
-            transform.rotation = Quaternion.LookRotation(m_NewDir, transform.up);
+            Ray frontRay = new Ray(m_FrontRaycasters[i].position, gameObject.transform.forward);
+            if(Physics.Raycast(frontRay, 0.75f))
+            {
+                raycastPlayerForward = true;
+                continue;
+            }
         }
-        else
+        return raycastPlayerForward;
+    }
+
+    public void OnHold(Transform a_Parent)
+    {
+        m_HisHeld = true;
+        m_Rigid.isKinematic = true;
+        m_Parent = a_Parent;
+
+        gameObject.layer = LayerMask.NameToLayer("HeldPlayer");
+
+        if(a_Parent.name == "CharacterGrab")
         {
-            m_Rigid.angularVelocity = Vector3.zero;
+            m_Offset = new Vector3(0f, 1.75f, 0f);
+        }
+        else if(a_Parent.tag == "Jar")
+        {
+            m_Offset = new Vector3(0f, 0f, 0f);   
+            GetComponent<Renderer>().enabled = false;  
+            a_Parent.GetComponent<Jar>().m_IsHiddingThePlayer = true;       
+        }
+    }
+
+    public void OnRelease()
+    {
+        if(m_Parent.tag == "Jar")
+        {
+            transform.position = m_Parent.position + new Vector3(0f, 1f, 0f);
+            m_Parent.GetComponent<Jar>().m_IsHiddingThePlayer = false;
+        }
+
+        GetComponent<Renderer>().enabled = true;
+
+        m_HisHeld = false;
+        m_Rigid.isKinematic = false;
+        m_Parent = null;
+
+        gameObject.layer = LayerMask.NameToLayer("PlayerFlee");
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* 
+    public void Hide(Transform a_cameraTarget)
+    {
+        gameObject.layer = LayerMask.NameToLayer("HeldObject"); 
+        GetComponent<Renderer>().enabled = false;  
+        SetCameraTarget(a_cameraTarget);
+    }
+
+    public void UnHide()
+    {
+        gameObject.layer = LayerMask.NameToLayer("PlayerFlee");
+        GetComponent<Renderer>().enabled = true;
+        SetCameraTarget(gameObject.transform);    
+    }
+
+    public void SetCameraTarget(Transform a_cameraTarget)
+    { 
+        if(a_cameraTarget != null)
+        {
+            m_Cinemachine.m_Follow = a_cameraTarget;
+            m_Cinemachine.m_LookAt = a_cameraTarget;
         }
     }
 
     private void GetInsideJar()
     {
-        Physics.IgnoreLayerCollision(gameObject.layer, LayerMask.NameToLayer("PlayerGrab"), true);
-        Hide(m_Jar, m_Jar.gameObject.layer);
+        m_Jar.GetComponent<Jar>().m_IsHiddingThePlayer = true;        
+        Hide(m_Jar);
     }
 
     private void GetOutsideJar()
     {
         transform.position = m_Jar.position + Vector3.up;
-        Physics.IgnoreLayerCollision(gameObject.layer, LayerMask.NameToLayer("PlayerGrab"), false);
+        m_Jar.GetComponent<Jar>().m_IsHiddingThePlayer = false;
         UnHide();
     }
-
+ */
 }
