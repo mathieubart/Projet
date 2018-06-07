@@ -7,6 +7,8 @@ TagManager:
   - GrabAble
   - Token
   - Jar
+  - Saxophone
+  - Boot
   layers:
   - Default
   - TransparentFX
@@ -28,8 +30,8 @@ TagManager:
   - Jar
   - HeldPlayer
   - HeldJar
-  - 
-  - 
+  - Saxophone
+  - Boot
   - 
   - 
   - 
