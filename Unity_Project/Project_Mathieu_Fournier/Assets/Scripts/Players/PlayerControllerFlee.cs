@@ -12,12 +12,13 @@ public class PlayerControllerFlee : MonoBehaviour
     [SerializeField]
     private Transform m_GroundRaycaster;
     [SerializeField]
-    private PlayerFleeUI m_PointText;
+    private PlayerFleeUI m_PlayerUI;
     [SerializeField]
     private CinemachineFreeLook m_Cinemachine;
     [SerializeField]
     private List<Transform> m_FrontRaycasters = new List<Transform>();
 
+    private bool m_IsMoving = false;
     [HideInInspector]
     public bool m_HisHeld {get; set;}
     [HideInInspector]
@@ -31,6 +32,8 @@ public class PlayerControllerFlee : MonoBehaviour
     public Transform m_Jar;
     private Transform m_Parent;
     private Rigidbody m_Rigid;
+    private BaseEffect m_PowerUp01;
+    private BaseEffect m_PowerUp02;
 
 
 
@@ -40,11 +43,20 @@ public class PlayerControllerFlee : MonoBehaviour
         m_Jar = null;
         m_Parent = null;
         m_Rigid = GetComponent<Rigidbody>();
-        m_PointText.SetText(m_Points);
+        m_PlayerUI.SetText(m_Points);
     }
 
     private void Update()
     {
+        if (Input.GetKey(KeyCode.W) && !RaycastPlayerForward())
+        {
+            m_IsMoving = true;
+        }
+        else
+        {
+            m_IsMoving = false;
+        }
+
         if(m_Parent != null)
         {
             transform.position = m_Parent.transform.position + m_Offset;
@@ -71,11 +83,23 @@ public class PlayerControllerFlee : MonoBehaviour
                 m_IsInAJar = false;
             }
         }
+
+        if(Input.GetKeyDown(KeyCode.Q) && m_PowerUp01 != null)
+        {
+            ActivatePowerUp(0);
+            m_PowerUp01 = null;
+        }
+
+        if(Input.GetKeyDown(KeyCode.E) && m_PowerUp02 != null)
+        {
+            ActivatePowerUp(1);
+            m_PowerUp02 = null;
+        }
     }
 
     private void FixedUpdate()
     {
-        if (m_Direction != Vector3.zero && !RaycastPlayerForward())
+        if (m_IsMoving && !m_HisHeld && IsGrounded() && !m_IsInAJar)
         {
             Move();
         }
@@ -89,17 +113,17 @@ public class PlayerControllerFlee : MonoBehaviour
         {
             aCol.gameObject.SetActive(false);
             m_Points++;
-            m_PointText.SetText(m_Points);
+            m_PlayerUI.SetText(m_Points);
         }
         else if(aCol.tag == "Jar")
         {
             m_Jar = aCol.GetComponent<Transform>();
         }
-        else if(aCol.tag == "Saxophone")
+        else if(aCol.tag == "Saxophone" || aCol.tag == "Boot")
         {
-            gameObject.AddComponent<FluteEffect>();
-            aCol.gameObject.SetActive(false);
+            AddPowerUp(aCol.gameObject);
         }
+
     }
 
     private void OnTriggerExit(Collider aCol)
@@ -142,10 +166,6 @@ public class PlayerControllerFlee : MonoBehaviour
 
         if(!m_HisHeld && IsGrounded() && !m_IsInAJar)
         {
-            if (Input.GetKey(KeyCode.W))
-            {
-                m_Direction += transform.forward;
-            }
             if (Input.GetKey(KeyCode.A))
             {
                 m_Direction -= transform.right;
@@ -218,5 +238,53 @@ public class PlayerControllerFlee : MonoBehaviour
         m_Parent = null;
 
         gameObject.layer = LayerMask.NameToLayer("PlayerFlee");
+    }
+
+    private void AddPowerUp(GameObject aPowerUp)
+    {
+        if(m_PowerUp01 == null)
+        {
+            if(aPowerUp.tag == "Saxophone")
+            {
+                m_PowerUp01 = gameObject.AddComponent<SaxophoneEffect>();
+                m_PlayerUI.ShowPowerUp01("Saxophone");         
+            }
+            else if(aPowerUp.tag == "Boot")
+            {
+                //m_PowerUp01 = gameObject.AddComponent<BootEffect>(); 
+                //m_PlayerUI.ShowPowerUp01("Boot");        
+            }
+
+            aPowerUp.SetActive(false);
+        }
+        else if(m_PowerUp02 == null)
+        {
+            if(aPowerUp.tag == "Saxophone")
+            {
+                m_PowerUp02 = gameObject.AddComponent<SaxophoneEffect>();
+                m_PlayerUI.ShowPowerUp02("Saxophone");            
+            }
+            else if(aPowerUp.tag == "Boot")
+            {
+                //m_PowerUp02 = gameObject.AddComponent<BootEffect>();    
+                //m_PlayerUI.ShowPowerUp02("Boot");     
+            }
+
+            aPowerUp.SetActive(false);
+        }
+    }
+
+    private void ActivatePowerUp(int aSlot)
+    {
+        if(aSlot == 0)
+        {
+            m_PowerUp01.PlayEffect();
+        }
+        else if(aSlot == 1)
+        {
+            m_PowerUp02.PlayEffect();
+        }
+
+        m_PlayerUI.HidePowerUp(aSlot);
     }
 }

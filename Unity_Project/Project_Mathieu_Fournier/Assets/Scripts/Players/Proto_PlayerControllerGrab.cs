@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerControllerGrab : MonoBehaviour
+public class Proto_PlayerControllerGrab : MonoBehaviour 
 {
     public float m_Speed = 10f;
     public float m_RotationSpeed = 10f;
@@ -42,7 +42,7 @@ public class PlayerControllerGrab : MonoBehaviour
         }
 
 
-        if (Input.GetKey(KeyCode.UpArrow) && IsNothingInFrontOfPlayer())
+        if (Input.GetKey(KeyCode.W) && IsNothingInFrontOfPlayer())
         {
             m_IsMoving = true;
         }
@@ -54,7 +54,7 @@ public class PlayerControllerGrab : MonoBehaviour
         SetDirection();
         Rotate();
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.F))
         {
             if(m_HeldObject != null)
             {
@@ -106,11 +106,11 @@ public class PlayerControllerGrab : MonoBehaviour
     {
         m_Direction = Vector3.zero;
 
-        if (Input.GetKey(KeyCode.LeftArrow))
+        if (Input.GetKey(KeyCode.A))
         {
             m_Direction -= transform.right;
         }
-        if (Input.GetKey(KeyCode.RightArrow))
+        if (Input.GetKey(KeyCode.D))
         {
             m_Direction += transform.right;
         }

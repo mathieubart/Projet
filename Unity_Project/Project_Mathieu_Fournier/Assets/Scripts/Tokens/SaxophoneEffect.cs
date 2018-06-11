@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FluteEffect : MonoBehaviour 
+public class SaxophoneEffect : BaseEffect 
 {
 	private float m_EffectDuration = 3f;
 	List<PlayerControllerGrab> m_Grabbers = new List<PlayerControllerGrab>();
@@ -10,15 +10,13 @@ public class FluteEffect : MonoBehaviour
 
 
 
-	void Start () 
+	public override void PlayEffect()
 	{
 		SetCharactersSpeedToZero();
-		StartCoroutine("FluteEffectTimer");
+		StartCoroutine("EffectTimer");
 	}
 
-
-
-	private IEnumerator FluteEffectTimer()
+	private IEnumerator EffectTimer()
 	{
 		yield return new WaitForSeconds(m_EffectDuration);
 		ResetCharactersSpeed();
@@ -58,8 +56,6 @@ public class FluteEffect : MonoBehaviour
 			}
 		}
 	}
-	
-
 
 
 }
