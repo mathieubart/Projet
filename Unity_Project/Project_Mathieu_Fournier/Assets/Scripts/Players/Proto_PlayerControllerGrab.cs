@@ -204,6 +204,21 @@ public class Proto_PlayerControllerGrab : MonoBehaviour
         }
     }
 
+    private void OnCollisionEnter(Collision aCollision)
+    {
+        if(aCollision.collider.tag == "Jar")
+        {       
+            foreach (ContactPoint point in aCollision)
+            {
+                if(point.point.y > 1.2f)
+                {
+                    gameObject.AddComponent<PROTO_JarStunEffect>();
+                    break;
+                }
+            }
+        }
+    }
+
     private void Grab()
     {
         if(m_GrabAbleObject.name == "CharacterFlee")

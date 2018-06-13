@@ -5,7 +5,7 @@ using UnityEngine;
 public class FollowGrabber : MonoBehaviour
 {
 	private Transform m_Parent;
-	private Vector3 m_Offset = new Vector3(0f, 1.75f, 0f);
+	private Vector3 m_Offset = new Vector3(0f, 1.85f, 0f);
 
 	private void Update () 
 	{
