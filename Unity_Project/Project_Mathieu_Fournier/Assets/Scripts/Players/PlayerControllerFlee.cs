@@ -35,6 +35,8 @@ public class PlayerControllerFlee : MonoBehaviour
     private BaseEffect m_PowerUp01;
     private BaseEffect m_PowerUp02;
 
+    //PROTO Only
+    public GameObject m_MusicImage;
 
 
     private void Start()

@@ -21,7 +21,7 @@ public class PlayerControllerGrab : MonoBehaviour
 
     //MathFournier : To Be Removed, To Add FeedBack During The Prototyte
     [SerializeField]
-    private GameObject m_FreezeImage;
+    private GameObject m_StunnedImage;
 
     private void Start()
     {
@@ -34,11 +34,11 @@ public class PlayerControllerGrab : MonoBehaviour
         //MathFournier : If/Else To Be Removed, Here To Add FeedBack During The Prototype;
         if(m_Speed != 0)
         {
-            m_FreezeImage.SetActive(false);
+            m_StunnedImage.SetActive(false);
         }
         else
         {
-            m_FreezeImage.SetActive(true);
+            m_StunnedImage.SetActive(true);
         }
 
 

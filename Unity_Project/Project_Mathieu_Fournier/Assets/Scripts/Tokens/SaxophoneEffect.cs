@@ -5,14 +5,20 @@ using UnityEngine;
 public class SaxophoneEffect : BaseEffect 
 {
 	private float m_EffectDuration = 3f;
-	List<PlayerControllerGrab> m_Grabbers = new List<PlayerControllerGrab>();
-	List<float> m_BaseSpeed = new List<float>();
+	private List<PlayerControllerGrab> m_Grabbers = new List<PlayerControllerGrab>();
+	private List<float> m_BaseSpeed = new List<float>();
 
-
+	//PROTO_ONLY
+	private GameObject m_MusicImage;
+	private void Awake()
+	{
+		m_MusicImage = GetComponent<PlayerControllerFlee>().m_MusicImage;
+	}
 
 	public override void PlayEffect()
 	{
 		SetCharactersSpeedToZero();
+		m_MusicImage.SetActive(true);
 		StartCoroutine("EffectTimer");
 	}
 
@@ -20,6 +26,7 @@ public class SaxophoneEffect : BaseEffect
 	{
 		yield return new WaitForSeconds(m_EffectDuration);
 		ResetCharactersSpeed();
+		m_MusicImage.SetActive(false);
 		yield return new WaitForSeconds(0.1f);
 		Destroy(this);	
 	}
