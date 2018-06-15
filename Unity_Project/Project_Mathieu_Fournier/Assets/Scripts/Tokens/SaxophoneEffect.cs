@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class SaxophoneEffect : BaseEffect 
 {
-	private float m_EffectDuration = 3f;
+	[HideInInspector]
+	public float m_EffectDuration = 3f;
 	private List<PlayerControllerGrab> m_Grabbers = new List<PlayerControllerGrab>();
 	private List<float> m_BaseSpeed = new List<float>();
 
@@ -26,6 +27,7 @@ public class SaxophoneEffect : BaseEffect
 	{
 		yield return new WaitForSeconds(m_EffectDuration);
 		ResetCharactersSpeed();
+		Debug.Log(m_EffectDuration);
 		m_MusicImage.SetActive(false);
 		yield return new WaitForSeconds(0.1f);
 		Destroy(this);	
@@ -46,8 +48,16 @@ public class SaxophoneEffect : BaseEffect
 				if(!m_Grabbers.Contains(spherecastHifos[i].collider.GetComponent<PlayerControllerGrab>()))
 				{
 					m_Grabbers.Add(spherecastHifos[i].collider.GetComponent<PlayerControllerGrab>());
-					m_BaseSpeed.Add(m_Grabbers[i].m_Speed);
-					m_Grabbers[i].SetSpeed(0f);
+					if(m_Grabbers[i].m_Speed != 0)
+					{
+						m_BaseSpeed.Add(m_Grabbers[i].m_Speed);
+						m_Grabbers[i].SetSpeed(0f);
+					}
+					else
+					{
+						GetComponent<SaxophoneEffect>().m_EffectDuration *= 2;
+						Destroy(this);
+					}
 				}
 			}
 		}

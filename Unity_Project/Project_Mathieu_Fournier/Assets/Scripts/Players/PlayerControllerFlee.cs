@@ -18,7 +18,6 @@ public class PlayerControllerFlee : MonoBehaviour
     [SerializeField]
     private List<Transform> m_FrontRaycasters = new List<Transform>();
 
-    private bool m_IsMoving = false;
     [HideInInspector]
     public bool m_HisHeld {get; set;}
     [HideInInspector]
@@ -27,6 +26,7 @@ public class PlayerControllerFlee : MonoBehaviour
     private float m_RotationStep;
     private Vector3 m_NewDir;
     private Vector3 m_Direction;
+    private Vector3 m_MoveDirection;
     private Vector3 m_Offset = new Vector3(0f, 0f, 0f);
     [HideInInspector]
     public Transform m_Jar;
@@ -42,6 +42,7 @@ public class PlayerControllerFlee : MonoBehaviour
     private void Start()
     {
         m_Direction = Vector3.zero;
+        m_MoveDirection = Vector3.zero;
         m_Jar = null;
         m_Parent = null;
         m_Rigid = GetComponent<Rigidbody>();
@@ -52,11 +53,16 @@ public class PlayerControllerFlee : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.W) && !RaycastPlayerForward())
         {
-            m_IsMoving = true;
+            m_MoveDirection = transform.forward * m_Speed;
+  
+        }
+        else if(Input.GetKey(KeyCode.S))
+        {
+            m_MoveDirection = -transform.forward * m_Speed;
         }
         else
         {
-            m_IsMoving = false;
+            m_MoveDirection = Vector3.zero;
         }
 
         if(m_Parent != null)
@@ -101,7 +107,7 @@ public class PlayerControllerFlee : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (m_IsMoving && !m_HisHeld && IsGrounded() && !m_IsInAJar)
+        if (!m_HisHeld && IsGrounded() && !m_IsInAJar)
         {
             Move();
         }
@@ -139,11 +145,9 @@ public class PlayerControllerFlee : MonoBehaviour
     public void Move()
     {
         float velocityY = m_Rigid.velocity.y;
-        Vector3 forwardXZ = Vector3.zero;
 
-        forwardXZ = transform.forward * m_Speed;
-        forwardXZ.y = velocityY;
-        m_Rigid.velocity = forwardXZ;
+        m_MoveDirection.y = velocityY;
+        m_Rigid.velocity = m_MoveDirection;
     }
 
     private void Rotate()
@@ -184,7 +188,7 @@ public class PlayerControllerFlee : MonoBehaviour
         bool isGrounded = false;
         if(!isGrounded)
         {
-            isGrounded = Physics.Raycast(m_GroundRaycaster.position + new Vector3(0f, 0.2f, 0f), -transform.up, 0.53f);
+            isGrounded = Physics.Raycast(m_GroundRaycaster.position + new Vector3(0f, 0.2f, 0f), -transform.up, 0.53f, ~LayerMask.GetMask("PlayerGrab"));
         }
         return isGrounded;
     }

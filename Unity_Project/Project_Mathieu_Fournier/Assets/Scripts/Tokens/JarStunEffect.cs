@@ -14,6 +14,7 @@ public class JarStunEffect : MonoBehaviour
 		{
 			if(gameObject.GetComponent<JarStunEffect>() != this)
 			{
+				Debug.Log("Kill Myself");
 				Destroy(this);
 			}
 		}

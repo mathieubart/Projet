@@ -10,10 +10,10 @@ public class Proto_PlayerControllerGrab : MonoBehaviour
     [SerializeField]
     private List<Transform> m_FrontRaycasters = new List<Transform>();
 
-    private bool m_IsMoving = false;
     private float m_RotationStep;
     private Vector3 m_NewDir;
     private Vector3 m_Direction;
+    private Vector3 m_MoveDirection;
     private Rigidbody m_Rigid;
     private GameObject m_GrabAbleObject;
     private GameObject m_HeldObject;
@@ -21,11 +21,12 @@ public class Proto_PlayerControllerGrab : MonoBehaviour
 
     //MathFournier : To Be Removed, To Add FeedBack During The Prototyte
     [SerializeField]
-    private GameObject m_StunnedImage;
+    private GameObject m_StunnedFeedback;
 
     private void Start()
     {
         m_Direction = Vector3.zero;
+        m_MoveDirection = Vector3.zero;
         m_Rigid = GetComponent<Rigidbody>();
     }
 
@@ -34,23 +35,26 @@ public class Proto_PlayerControllerGrab : MonoBehaviour
         //MathFournier : If/Else To Be Removed, Here To Add FeedBack During The Prototype;
         if(m_Speed != 0)
         {
-            m_StunnedImage
-    .SetActive(false);
+            m_StunnedFeedback.SetActive(false);
         }
         else
         {
-            m_StunnedImage
-    .SetActive(true);
+            m_StunnedFeedback.SetActive(true);
         }
 
 
         if (Input.GetKey(KeyCode.W) && IsNothingInFrontOfPlayer())
         {
-            m_IsMoving = true;
+            m_MoveDirection = transform.forward * m_Speed;
+  
+        }
+        else if(Input.GetKey(KeyCode.S))
+        {
+            m_MoveDirection = -transform.forward * m_Speed;
         }
         else
         {
-            m_IsMoving = false;
+            m_MoveDirection = Vector3.zero;
         }
 
         SetDirection();
@@ -71,20 +75,15 @@ public class Proto_PlayerControllerGrab : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (m_IsMoving)
-        {
-            Move();
-        }
+        Move();
     }
 
     public void Move()
     {
         float velocityY = m_Rigid.velocity.y;
-        Vector3 forwardXZ = Vector3.zero;
 
-        forwardXZ = transform.forward * m_Speed;
-        forwardXZ.y = velocityY;
-        m_Rigid.velocity = forwardXZ;
+        m_MoveDirection.y = velocityY;
+        m_Rigid.velocity = m_MoveDirection;
     }
 
     private bool IsNothingInFrontOfPlayer()

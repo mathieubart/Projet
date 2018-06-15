@@ -21,13 +21,13 @@ GameObject:
   - component: {fileID: 4473455981101290}
   - component: {fileID: 33103559560397546}
   - component: {fileID: 23362293403701650}
-  - component: {fileID: 65061768330705886}
+  - component: {fileID: 65335579198576348}
   m_Layer: 0
   m_Name: WallWindow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &4473455981101290
 Transform:
@@ -83,15 +83,15 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1156824734981500}
   m_Mesh: {fileID: 4300000, guid: 579912e9d9285504993ff7a7181ab94f, type: 3}
---- !u!65 &65061768330705886
+--- !u!65 &65335579198576348
 BoxCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1156824734981500}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: d3fd87ea1938c474d826eaf4b2ba093d, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 8.400002, y: 6, z: 0.20000003}
-  m_Center: {x: -4.000002, y: 3, z: -0.0000019073486}
+  m_Size: {x: 8.200002, y: 6, z: 0.20000003}
+  m_Center: {x: -4.0000014, y: 3, z: -0.0000019073486}
