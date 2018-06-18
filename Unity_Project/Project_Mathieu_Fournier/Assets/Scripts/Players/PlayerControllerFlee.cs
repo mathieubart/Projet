@@ -35,8 +35,9 @@ public class PlayerControllerFlee : MonoBehaviour
     private BaseEffect m_PowerUp01;
     private BaseEffect m_PowerUp02;
 
-    //PROTO Only
+    //PROTO Only, To show Feedback!
     public GameObject m_MusicImage;
+
 
 
     private void Start()
@@ -80,13 +81,11 @@ public class PlayerControllerFlee : MonoBehaviour
         {
             if(!m_IsInAJar)
             {
-               // GetInsideJar();
                 OnHold(m_Jar);
                 m_IsInAJar = true;
             }
             else 
             {
-               // GetOutsideJar();
                 OnRelease();
                 m_IsInAJar = false;
             }
@@ -115,6 +114,7 @@ public class PlayerControllerFlee : MonoBehaviour
 
 
 
+    //Grab Tokens/Powerups or take a Jar reference if at range
     private void OnTriggerEnter(Collider aCol)
     {
         if(aCol.tag == "Token")
@@ -134,6 +134,7 @@ public class PlayerControllerFlee : MonoBehaviour
 
     }
 
+    //Remove the jar reference if he is no longer at range
     private void OnTriggerExit(Collider aCol)
     {
         if(aCol.tag == "Jar")
@@ -142,6 +143,7 @@ public class PlayerControllerFlee : MonoBehaviour
         }
     }
 
+    //Move the player forward or backward
     public void Move()
     {
         float velocityY = m_Rigid.velocity.y;
@@ -150,6 +152,7 @@ public class PlayerControllerFlee : MonoBehaviour
         m_Rigid.velocity = m_MoveDirection;
     }
 
+    //Rotate the player to face his direction
     private void Rotate()
     {
         m_RotationStep = m_RotationSpeed * Time.deltaTime;
@@ -183,6 +186,7 @@ public class PlayerControllerFlee : MonoBehaviour
         }
     }
 
+    //Return true if the player touch the ground
     private bool IsGrounded()
     {
         bool isGrounded = false;
@@ -193,6 +197,7 @@ public class PlayerControllerFlee : MonoBehaviour
         return isGrounded;
     }
 
+    //Return true if something is in front of the player
     private bool RaycastPlayerForward()
     {
         bool raycastPlayerForward = false;
@@ -200,7 +205,7 @@ public class PlayerControllerFlee : MonoBehaviour
         for (int i = 0; i < m_FrontRaycasters.Count; i++)
         {
             Ray frontRay = new Ray(m_FrontRaycasters[i].position, gameObject.transform.forward);
-            if(Physics.Raycast(frontRay, 0.75f))
+            if(Physics.Raycast(frontRay, 0.75f, LayerMask.NameToLayer("Default")))
             {
                 raycastPlayerForward = true;
                 continue;
@@ -209,6 +214,7 @@ public class PlayerControllerFlee : MonoBehaviour
         return raycastPlayerForward;
     }
 
+    //Set the player parameters when it hide in a jar or when he is grabbed
     public void OnHold(Transform a_Parent)
     {
         m_HisHeld = true;
@@ -229,6 +235,7 @@ public class PlayerControllerFlee : MonoBehaviour
         }
     }
 
+    //Reset the player parameters when it is released by a player or exit the jar
     public void OnRelease()
     {
         if(m_Parent.tag == "Jar")
@@ -246,6 +253,7 @@ public class PlayerControllerFlee : MonoBehaviour
         gameObject.layer = LayerMask.NameToLayer("PlayerFlee");
     }
 
+    //Add a powerup to the player if a slot (UI Slot see **PlayerFleeUI**) is empty.
     private void AddPowerUp(GameObject aPowerUp)
     {
         if(m_PowerUp01 == null)
@@ -257,6 +265,7 @@ public class PlayerControllerFlee : MonoBehaviour
             }
             else if(aPowerUp.tag == "Boot")
             {
+                //TODO: 
                 //m_PowerUp01 = gameObject.AddComponent<BootEffect>(); 
                 //m_PlayerUI.ShowPowerUp01("Boot");        
             }
@@ -272,6 +281,7 @@ public class PlayerControllerFlee : MonoBehaviour
             }
             else if(aPowerUp.tag == "Boot")
             {
+                //TODO:
                 //m_PowerUp02 = gameObject.AddComponent<BootEffect>();    
                 //m_PlayerUI.ShowPowerUp02("Boot");     
             }
@@ -280,6 +290,7 @@ public class PlayerControllerFlee : MonoBehaviour
         }
     }
 
+    //Activate a powerup if there is a powerup in the input corresponding Slot.
     private void ActivatePowerUp(int aSlot)
     {
         if(aSlot == 0)

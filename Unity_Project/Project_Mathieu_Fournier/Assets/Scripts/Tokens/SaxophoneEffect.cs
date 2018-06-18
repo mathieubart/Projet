@@ -27,7 +27,6 @@ public class SaxophoneEffect : BaseEffect
 	{
 		yield return new WaitForSeconds(m_EffectDuration);
 		ResetCharactersSpeed();
-		Debug.Log(m_EffectDuration);
 		m_MusicImage.SetActive(false);
 		yield return new WaitForSeconds(0.1f);
 		Destroy(this);	
@@ -73,6 +72,4 @@ public class SaxophoneEffect : BaseEffect
 			}
 		}
 	}
-
-
 }
