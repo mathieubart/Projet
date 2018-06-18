@@ -254,7 +254,7 @@ public class PlayerControllerFlee : MonoBehaviour
     }
 
     //Add a powerup to the player if a slot (UI Slot see **PlayerFleeUI**) is empty.
-    private void AddPowerUp(GameObject aPowerUp)
+    public void AddPowerUp(GameObject aPowerUp)
     {
         if(m_PowerUp01 == null)
         {

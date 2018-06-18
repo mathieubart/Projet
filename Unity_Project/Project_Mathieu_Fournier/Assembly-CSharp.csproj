@@ -104,6 +104,7 @@
      <Compile Include="Assets\Cinemachine\Timeline\CinemachineMixer.cs" />
      <Compile Include="Assets\Cinemachine\Timeline\CinemachineShot.cs" />
      <Compile Include="Assets\Cinemachine\Timeline\CinemachineTrack.cs" />
+     <Compile Include="Assets\Scripts\Chest\Chest.cs" />
      <Compile Include="Assets\Scripts\Jar\FollowGrabber.cs" />
      <Compile Include="Assets\Scripts\Jar\Jar.cs" />
      <Compile Include="Assets\Scripts\Level\ExitZone.cs" />
