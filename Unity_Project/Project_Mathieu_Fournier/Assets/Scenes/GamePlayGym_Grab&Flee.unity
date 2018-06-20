@@ -1600,8 +1600,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf4e41431b1d9ce4596c2bb7061c26d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Speed: 4
-  m_RotationSpeed: 5
+  m_PlayerData: {fileID: 11400000, guid: 95697e143a18dc146b82b7e5bcb8b8b2, type: 2}
   m_GroundRaycaster: {fileID: 777041660}
   m_PlayerUI: {fileID: 1649333011}
   m_Cinemachine: {fileID: 2100570618}
@@ -2115,7 +2114,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 432721507}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 1077351063, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 

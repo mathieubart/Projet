@@ -6,9 +6,12 @@ using Cinemachine;
 public class PlayerControllerFlee : MonoBehaviour
 {
     [SerializeField]
-    private float m_Speed = 10f;
-    [SerializeField]
-    private float m_RotationSpeed = 10f;
+    private PlayerFleeData m_PlayerData;
+    private PlayerID m_ID;
+
+    private float m_Speed;
+    private float m_RotationSpeed;
+
     [SerializeField]
     private Transform m_GroundRaycaster;
     [SerializeField]
@@ -38,7 +41,19 @@ public class PlayerControllerFlee : MonoBehaviour
     //PROTO Only, To show Feedback!
     public GameObject m_MusicImage;
 
-
+    private void Awake()
+    {
+        if(m_PlayerData != null)
+        {
+            m_ID = m_PlayerData.ID;
+            m_Speed = m_PlayerData.Speed;
+            m_RotationSpeed = m_PlayerData.RotationSpeed;
+        }
+        else
+        {
+            Debug.LogError("You forgot to put assign a PlayerData in the inspector. Mathieu F");
+        }
+    }
 
     private void Start()
     {
@@ -52,12 +67,12 @@ public class PlayerControllerFlee : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKey(KeyCode.W) && !RaycastPlayerForward())
+        if (Input.GetAxis("Forward_" + m_ID.ToString()) > 0f && !RaycastPlayerForward())
         {
             m_MoveDirection = transform.forward * m_Speed;
   
         }
-        else if(Input.GetKey(KeyCode.S))
+        else if(Input.GetAxis("Forward_" + m_ID.ToString()) < 0f)
         {
             m_MoveDirection = -transform.forward * m_Speed;
         }
@@ -77,7 +92,7 @@ public class PlayerControllerFlee : MonoBehaviour
             Rotate();
         }
 
-        if(Input.GetKeyDown(KeyCode.F) && m_Jar != null)
+        if(Input.GetButtonDown("Action_" + m_ID.ToString()) && m_Jar != null)
         {
             if(!m_IsInAJar)
             {
@@ -91,13 +106,13 @@ public class PlayerControllerFlee : MonoBehaviour
             }
         }
 
-        if(Input.GetKeyDown(KeyCode.Q) && m_PowerUp01 != null)
+        if(Input.GetButtonDown("Powerup01_" + m_ID.ToString()) && m_PowerUp01 != null)
         {
             ActivatePowerUp(0);
             m_PowerUp01 = null;
         }
 
-        if(Input.GetKeyDown(KeyCode.E) && m_PowerUp02 != null)
+        if(Input.GetButtonDown("Powerup02_" + m_ID.ToString()) && m_PowerUp02 != null)
         {
             ActivatePowerUp(1);
             m_PowerUp02 = null;
@@ -175,11 +190,11 @@ public class PlayerControllerFlee : MonoBehaviour
 
         if(!m_HisHeld && IsGrounded() && !m_IsInAJar)
         {
-            if (Input.GetKey(KeyCode.A))
+            if (Input.GetAxis("Horizontal_" + m_ID.ToString()) < 0f)
             {
                 m_Direction -= transform.right;
             }
-            if (Input.GetKey(KeyCode.D))
+            if (Input.GetAxis("Horizontal_" + m_ID.ToString()) > 0f)
             {
                 m_Direction += transform.right;
             }
