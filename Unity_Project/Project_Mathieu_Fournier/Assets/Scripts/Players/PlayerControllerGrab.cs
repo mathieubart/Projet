@@ -4,9 +4,15 @@ using UnityEngine;
 
 public class PlayerControllerGrab : MonoBehaviour
 {
-    public float m_Speed = 10f;
-    public float m_RotationSpeed = 10f;
-    public float m_ThrowForce = 250f;
+    [SerializeField]
+    private PlayerGrabData m_PlayerData;
+    private PlayerID m_ID;
+
+    [HideInInspector]
+    public float m_Speed;
+
+    private float m_RotationSpeed;
+    private float m_ThrowForce;
     [SerializeField]
     private List<Transform> m_FrontRaycasters = new List<Transform>();
 
@@ -22,6 +28,21 @@ public class PlayerControllerGrab : MonoBehaviour
     //MathFournier : To Be Removed, To Add FeedBack During The Prototyte
     [SerializeField]
     private GameObject m_StunnedFeedback;
+
+    private void Awake()
+    {
+        if(m_PlayerData != null)
+        {
+            m_ID = m_PlayerData.ID;
+            m_Speed = m_PlayerData.Speed;
+            m_RotationSpeed = m_PlayerData.RotationSpeed;
+            m_ThrowForce = m_PlayerData.ThrowForce;
+        }
+        else
+        {
+            Debug.LogError("You forgot to put a PlayerGrabData on the character. Mathieu F");
+        }
+    }
 
     private void Start()
     {
@@ -42,12 +63,12 @@ public class PlayerControllerGrab : MonoBehaviour
             m_StunnedFeedback.SetActive(true);
         }
 
-        if (Input.GetKey(KeyCode.UpArrow) && IsNothingInFrontOfPlayer())
+        if (Input.GetAxis("Forward_" + m_ID) > 0f && IsNothingInFrontOfPlayer())
         {
             m_MoveDirection = transform.forward * m_Speed;
   
         }
-        else if(Input.GetKey(KeyCode.DownArrow))
+        else if(Input.GetAxis("Forward_" + m_ID) < 0f)
         {
             m_MoveDirection = -transform.forward * m_Speed;
         }
@@ -59,7 +80,7 @@ public class PlayerControllerGrab : MonoBehaviour
         SetDirection();
         Rotate();
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetButtonDown("Action_" + m_ID))
         {
             if(m_HeldObject != null)
             {
@@ -106,11 +127,11 @@ public class PlayerControllerGrab : MonoBehaviour
     {
         m_Direction = Vector3.zero;
 
-        if (Input.GetKey(KeyCode.LeftArrow))
+        if (Input.GetAxis("Horizontal_" + m_ID) < 0f)
         {
             m_Direction -= transform.right;
         }
-        if (Input.GetKey(KeyCode.RightArrow))
+        if (Input.GetAxis("Horizontal_" + m_ID) > 0f)
         {
             m_Direction += transform.right;
         }

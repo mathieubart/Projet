@@ -20,6 +20,8 @@ public class PlayerControllerFlee : MonoBehaviour
     private CinemachineFreeLook m_Cinemachine;
     [SerializeField]
     private List<Transform> m_FrontRaycasters = new List<Transform>();
+    [SerializeField]
+    private GameObject m_TokenTrigger;
 
     [HideInInspector]
     public bool m_HisHeld {get; set;}
@@ -237,6 +239,7 @@ public class PlayerControllerFlee : MonoBehaviour
         m_Parent = a_Parent;
 
         gameObject.layer = LayerMask.NameToLayer("HeldPlayer");
+        m_TokenTrigger.layer = LayerMask.NameToLayer("HeldPlayer");
 
         if(a_Parent.name == "CharacterGrab")
         {
@@ -266,6 +269,7 @@ public class PlayerControllerFlee : MonoBehaviour
         m_Parent = null;
 
         gameObject.layer = LayerMask.NameToLayer("PlayerFlee");
+        m_TokenTrigger.layer = LayerMask.NameToLayer("Token");
     }
 
     //Add a powerup to the player if a slot (UI Slot see **PlayerFleeUI**) is empty.
@@ -318,5 +322,18 @@ public class PlayerControllerFlee : MonoBehaviour
         }
 
         m_PlayerUI.HidePowerUp(aSlot);
+    }
+
+    //Return true if a powerup slot is empty
+    public bool IsASlotEmpty()
+    {
+        if(m_PowerUp01 == null || m_PowerUp02 == null)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }

@@ -11,7 +11,7 @@ public enum PlayerID
 	PlayerFour = 4,
 }
 
-[CreateAssetMenu(fileName = "new player flee data", menuName = "ScriptableObjects", order = 3)]
+[CreateAssetMenu(fileName = "new player flee data", menuName = "ScriptableObjects/Player Flee Data", order = 1)]
 public class PlayerFleeData : ScriptableObject
 {
 	[SerializeField]
