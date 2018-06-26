@@ -26,6 +26,14 @@ public class PlayerGrabData : ScriptableObject
 		get { return m_RotationSpeed; }
 	}
 
+	[Tooltip("Angle in degrees between the forward and the wanted throw angle. Starting at the player forward going up.")]
+	[SerializeField]
+    private float m_ThrowAngle;
+	public float ThrowAngle 
+	{
+		get { return m_ThrowAngle; }
+	}
+
 	[SerializeField]
     private float m_ThrowForce;
 	public float ThrowForce 

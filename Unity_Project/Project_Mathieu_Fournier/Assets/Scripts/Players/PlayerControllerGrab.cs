@@ -13,6 +13,7 @@ public class PlayerControllerGrab : MonoBehaviour
 
     private float m_RotationSpeed;
     private float m_ThrowForce;
+    private float m_ThrowAngle;
     [SerializeField]
     private List<Transform> m_FrontRaycasters = new List<Transform>();
 
@@ -36,6 +37,7 @@ public class PlayerControllerGrab : MonoBehaviour
             m_ID = m_PlayerData.ID;
             m_Speed = m_PlayerData.Speed;
             m_RotationSpeed = m_PlayerData.RotationSpeed;
+            m_ThrowAngle = m_PlayerData.ThrowAngle;
             m_ThrowForce = m_PlayerData.ThrowForce;
         }
         else
@@ -52,10 +54,7 @@ public class PlayerControllerGrab : MonoBehaviour
     }
 
     private void Update()
-    {
-        float actualSpeedd = Vector3.Magnitude(m_Rigid.velocity);
-        Debug.DrawRay(transform.position, (transform.forward * (m_ThrowForce + (actualSpeedd * 25f))) + (transform.up * m_ThrowForce));
-        
+    {      
         //MathFournier : If/Else To Be Removed, Here To Add FeedBack During The Prototype;
         if(m_Speed != 0)
         {
@@ -262,7 +261,7 @@ public class PlayerControllerGrab : MonoBehaviour
 
     private void Throw()
     {
-        float actualSpeed = Vector3.Magnitude(m_Rigid.velocity);
+        Vector3 throwDirection = Quaternion.AngleAxis(m_ThrowAngle, -transform.right) * transform.forward;
 
         if(m_HeldObject.name == "CharacterFlee")
         {
@@ -273,7 +272,8 @@ public class PlayerControllerGrab : MonoBehaviour
             m_HeldObject.GetComponent<Jar>().OnRelease();
         }
 
-        m_HeldObject.GetComponent<Rigidbody>().AddForce((transform.forward * (m_ThrowForce + (actualSpeed * 25f))) + (transform.up * m_ThrowForce));
+        m_HeldObject.GetComponent<Rigidbody>().velocity = m_Rigid.velocity;      
+        m_HeldObject.GetComponent<Rigidbody>().AddForce(throwDirection * m_ThrowForce);
 
         m_HeldObject = null;
     }
