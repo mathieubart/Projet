@@ -235,7 +235,7 @@ public class PlayerControllerFlee : MonoBehaviour
     public void OnHold(Transform a_Parent)
     {
         m_HisHeld = true;
-        m_Rigid.isKinematic = true;
+        //m_Rigid.isKinematic = true;
         m_Parent = a_Parent;
 
         gameObject.layer = LayerMask.NameToLayer("HeldPlayer");
@@ -265,7 +265,7 @@ public class PlayerControllerFlee : MonoBehaviour
         GetComponent<Renderer>().enabled = true;
 
         m_HisHeld = false;
-        m_Rigid.isKinematic = false;
+        //m_Rigid.isKinematic = false;
         m_Parent = null;
 
         gameObject.layer = LayerMask.NameToLayer("PlayerFlee");

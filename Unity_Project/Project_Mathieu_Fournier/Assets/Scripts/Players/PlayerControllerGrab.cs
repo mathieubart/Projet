@@ -53,6 +53,9 @@ public class PlayerControllerGrab : MonoBehaviour
 
     private void Update()
     {
+        float actualSpeedd = Vector3.Magnitude(m_Rigid.velocity);
+        Debug.DrawRay(transform.position, (transform.forward * (m_ThrowForce + (actualSpeedd * 25f))) + (transform.up * m_ThrowForce));
+        
         //MathFournier : If/Else To Be Removed, Here To Add FeedBack During The Prototype;
         if(m_Speed != 0)
         {
