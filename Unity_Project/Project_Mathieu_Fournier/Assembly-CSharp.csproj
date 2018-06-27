@@ -108,6 +108,7 @@
      <Compile Include="Assets\Scripts\Jar\FollowGrabber.cs" />
      <Compile Include="Assets\Scripts\Jar\Jar.cs" />
      <Compile Include="Assets\Scripts\Level\ExitZone.cs" />
+     <Compile Include="Assets\Scripts\Managers\TeamManager.cs" />
      <Compile Include="Assets\Scripts\Players\PlayerControllerFlee.cs" />
      <Compile Include="Assets\Scripts\Players\PlayerControllerGrab.cs" />
      <Compile Include="Assets\Scripts\Players\PlayerFleeUI.cs" />

@@ -22,6 +22,8 @@ public class PlayerControllerFlee : MonoBehaviour
     private List<Transform> m_FrontRaycasters = new List<Transform>();
     [SerializeField]
     private GameObject m_TokenTrigger;
+    [SerializeField]
+    private GameObject m_MoneyBag;
 
     [HideInInspector]
     public bool m_HisHeld {get; set;}
@@ -136,6 +138,8 @@ public class PlayerControllerFlee : MonoBehaviour
     {
         if(aCol.tag == "Token")
         {
+            GrowBag(false);
+
             aCol.gameObject.SetActive(false);
             m_Points++;
             m_PlayerUI.SetText(m_Points);
@@ -154,7 +158,7 @@ public class PlayerControllerFlee : MonoBehaviour
     //Remove the jar reference if he is no longer at range
     private void OnTriggerExit(Collider aCol)
     {
-        if(aCol.tag == "Jar")
+        if(gameObject.layer == LayerMask.NameToLayer("PlayerFlee") && aCol.tag == "Jar")
         {
             m_Jar = null;
         }
@@ -229,6 +233,26 @@ public class PlayerControllerFlee : MonoBehaviour
             }
         }
         return raycastPlayerForward;
+    }
+
+    //Grow The Bag Size or reset the Size if the bool is true.
+    private void GrowBag(bool a_Reset)
+    {
+        if(a_Reset)
+        {
+            m_MoneyBag.transform.localScale = new Vector3(1f, 0.5f, 1f);
+        }
+        else
+        {
+            if(m_MoneyBag.transform.localScale.y <= 1f)
+            {
+                m_MoneyBag.transform.localScale += new Vector3(0f, 0.1f, 0f); 
+            }
+            else if(m_MoneyBag.transform.localScale.z <= 1.5f)
+            {
+                m_MoneyBag.transform.localScale += new Vector3(0.1f, 0f, 0.1f); 
+            }
+        }
     }
 
     //Set the player parameters when it hide in a jar or when he is grabbed
@@ -335,5 +359,10 @@ public class PlayerControllerFlee : MonoBehaviour
         {
             return false;
         }
+    }
+
+    public void SetSpeed(float a_NewSpeed)
+    {
+        m_Speed = a_NewSpeed;
     }
 }

@@ -36,7 +36,7 @@ public class SaxophoneEffect : BaseEffect
 	{
 		RaycastHit[] spherecastHifos;
 
-		spherecastHifos = Physics.SphereCastAll(transform.position, 5f, transform.position, 0f, LayerMask.GetMask("PlayerGrab"));
+		spherecastHifos = Physics.SphereCastAll(transform.position, 5f, transform.position, 0f, LayerMask.GetMask("PlayerGrab", "PlayerFlee"));
 
 		if(spherecastHifos.Length != 0)
 		{
