@@ -2,8 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public struct Team
+{
+	public int GameScore;
+	public int LevelScore;
+	public GameObject Player01;
+	public GameObject Player02;
+}
+
 public class TeamManager : MonoBehaviour 
 {
+	private Team Team01;
+	private Team Team02;
+
 	private static TeamManager m_Instance;
 	public TeamManager Instance
 	{
@@ -21,5 +32,30 @@ public class TeamManager : MonoBehaviour
 			m_Instance = this;
 		}
 		DontDestroyOnLoad(gameObject);
+	}
+
+	public void AssignPlayer()
+	{
+		if(Team01.Player01 == null)
+		{
+			//Set The Player Control to The First Camera Quadrant.    Top-Left
+		}
+		else if(Team02.Player01 == null)
+		{
+			//Set The Player Control to The Second Camera Quadrant.   Top-Right
+		}
+		else if(Team01.Player02 == null)
+		{
+			//Set The Player Control to The Third Camera Quadrant.    Bottom-Left
+		}
+		else if(Team02.Player02 == null)
+		{
+			//Set The Player Control to The Fourth Camera Quadrant.   Bottom-Right
+		}
+	}
+
+	public void SwitchCharacterControl()
+	{
+		//Activate/Desactivate The Characters to Change The Current Players Chacater.   Flee <--> Grabber.
 	}
 }
