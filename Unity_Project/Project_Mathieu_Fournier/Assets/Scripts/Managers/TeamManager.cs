@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public struct Team
 {
@@ -38,6 +39,7 @@ public class TeamManager : MonoBehaviour
 	{
 		if(Team01.Player01 == null)
 		{
+
 			//Set The Player Control to The First Camera Quadrant.    Top-Left
 		}
 		else if(Team02.Player01 == null)
@@ -54,8 +56,14 @@ public class TeamManager : MonoBehaviour
 		}
 	}
 
-	public void SwitchCharacterControl()
+	//Assign randomly the characters to the teams players.
+	public void SetRandomCharacters()
 	{
-		//Activate/Desactivate The Characters to Change The Current Players Chacater.   Flee <--> Grabber.
+		
+	}
+
+	public void SwitchCharacters()
+	{
+		//Activate/Desactivate The Characters to Change The Current Players Characters.  Player01 /02 /03 /04 : Flee <--> Grabber.
 	}
 }
