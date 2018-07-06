@@ -71,8 +71,7 @@ public class StartMenu : MonoBehaviour
 
 			if(m_PlayerFourReady)
 			{
-				//Unload the Start Menu.
-				//Load the Main Menu.
+				LevelManager.Instance.ChangeScene(EScenes.MainMenu);
 			}
 		}
 	}

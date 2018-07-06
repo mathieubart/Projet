@@ -105,6 +105,7 @@
      <Compile Include="Assets\Cinemachine\Timeline\CinemachineShot.cs" />
      <Compile Include="Assets\Cinemachine\Timeline\CinemachineTrack.cs" />
      <Compile Include="Assets\Scripts\Chest\Chest.cs" />
+     <Compile Include="Assets\Scripts\Enums\EScenes.cs" />
      <Compile Include="Assets\Scripts\Jar\FollowGrabber.cs" />
      <Compile Include="Assets\Scripts\Jar\Jar.cs" />
      <Compile Include="Assets\Scripts\Level\ExitZone.cs" />
@@ -116,11 +117,11 @@
      <Compile Include="Assets\Scripts\Players\PlayerControllerFlee.cs" />
      <Compile Include="Assets\Scripts\Players\PlayerControllerGrab.cs" />
      <Compile Include="Assets\Scripts\Players\PlayerFleeUI.cs" />
+     <Compile Include="Assets\Scripts\Players\PlayerRef.cs" />
      <Compile Include="Assets\Scripts\Players\Proto_PlayerControllerGrab.cs" />
      <Compile Include="Assets\Scripts\Proto\CharacterSwitch.cs" />
      <Compile Include="Assets\Scripts\ScriptableObjects\PlayerFleeData.cs" />
      <Compile Include="Assets\Scripts\ScriptableObjects\PlayerGrabData.cs" />
-     <Compile Include="Assets\Scripts\ScriptableObjects\ScenesData.cs" />
      <Compile Include="Assets\Scripts\Tokens\BaseEffect.cs" />
      <Compile Include="Assets\Scripts\Tokens\Boot.cs" />
      <Compile Include="Assets\Scripts\Tokens\BootEffect.cs" />
