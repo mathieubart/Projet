@@ -109,10 +109,10 @@
      <Compile Include="Assets\Scripts\Jar\FollowGrabber.cs" />
      <Compile Include="Assets\Scripts\Jar\Jar.cs" />
      <Compile Include="Assets\Scripts\Level\ExitZone.cs" />
+     <Compile Include="Assets\Scripts\Managers\AudioManager.cs" />
      <Compile Include="Assets\Scripts\Managers\LevelManager.cs" />
      <Compile Include="Assets\Scripts\Managers\TeamManager.cs" />
      <Compile Include="Assets\Scripts\Menus\MainMenu\MenuController.cs" />
-     <Compile Include="Assets\Scripts\Menus\MainMenu\Score.cs" />
      <Compile Include="Assets\Scripts\Menus\StartMenu\StartMenu.cs" />
      <Compile Include="Assets\Scripts\Players\PlayerControllerFlee.cs" />
      <Compile Include="Assets\Scripts\Players\PlayerControllerGrab.cs" />

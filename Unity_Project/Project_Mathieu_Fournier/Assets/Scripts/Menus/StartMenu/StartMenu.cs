@@ -24,7 +24,6 @@ public class StartMenu : MonoBehaviour
 			m_StartTexts[i].GetComponent<Animator>().enabled = false;
 			m_StartImage[i].enabled = false;
 		}
-
 	}
 
 	void Update () 
@@ -38,7 +37,7 @@ public class StartMenu : MonoBehaviour
 		{
 			if(Input.GetButtonDown("Action_PlayerOne"))
 			{
-				Debug.Log("ONE");
+				TeamManager.Instance.AddTeam();
 				m_PlayerOneReady = true;
 				m_StartTexts[0].text = "Ready!";
 				m_StartTexts[0].GetComponent<Animator>().enabled = false;
@@ -47,7 +46,6 @@ public class StartMenu : MonoBehaviour
 			
 			if(m_PlayerOneReady && Input.GetButtonDown("Action_PlayerTwo"))
 			{
-				Debug.Log("Two");
 				m_PlayerTwoReady = true;
 				m_StartTexts[1].text = "Ready!";	
 				m_StartTexts[1].GetComponent<Animator>().enabled = false;
@@ -56,6 +54,7 @@ public class StartMenu : MonoBehaviour
 			
 			if(m_PlayerTwoReady && Input.GetButtonDown("Action_PlayerThree"))
 			{
+				TeamManager.Instance.AddTeam();				
 				m_PlayerThreeReady = true;
 				m_StartTexts[2].text = "Ready!";
 				m_StartTexts[2].GetComponent<Animator>().enabled = false;

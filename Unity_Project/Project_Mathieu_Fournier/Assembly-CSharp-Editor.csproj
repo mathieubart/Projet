@@ -95,6 +95,7 @@
      <Compile Include="Assets\Cinemachine\PostFX\Editor\PostFXAutoImport.cs" />
      <Compile Include="Assets\Cinemachine\Timeline\Editor\CinemachineShotEditor.cs" />
      <Compile Include="Assets\Editor\EnumModifierEditor.cs" />
+     <Compile Include="Assets\Editor\SceneAutoLoader.cs" />
  <Reference Include="Vuforia.UnityExtensions.Editor">
  <HintPath>C:/Program Files/Unity2017.4/Editor/Data/PlaybackEngines/VuforiaSupport/Managed/Editor/Vuforia.UnityExtensions.Editor.dll</HintPath>
  </Reference>

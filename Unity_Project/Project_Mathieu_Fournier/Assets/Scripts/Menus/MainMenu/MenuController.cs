@@ -8,11 +8,14 @@ public class MenuController : MonoBehaviour
 {
 	[SerializeField]
 	private float m_WinningGameScore = 50f;
+	[SerializeField]
+	private Slider m_ScoreSliderTeam01;
+	[SerializeField]
+	private Slider m_ScoreSliderTeam02;
 
 	[SerializeField]
 	private TextMeshProUGUI m_PressStartText;
 
-	private bool m_IsDistributingPoints = false;
 	[SerializeField]
 	private float m_DistributionTime = 5f;
 	[SerializeField]
@@ -29,6 +32,7 @@ public class MenuController : MonoBehaviour
 	[SerializeField]
 	private Image m_LooseTeam02;
 
+	private Coroutine m_DistributionRoutine;
 
 	private List<int> m_LevelScores = new List<int>();
 
@@ -38,11 +42,15 @@ public class MenuController : MonoBehaviour
 		m_PressStartText.enabled = false;
 		m_ParticleST01.Stop();
 		m_ParticleST02.Stop();
+		m_ScoreSliderTeam01.maxValue = m_WinningGameScore;
+		m_ScoreSliderTeam02.maxValue = m_WinningGameScore;
 	}
 
 	private void Start()
 	{
 		GetTeamsPoint();
+		m_ScoreSliderTeam01.value = TeamManager.Instance.GetGameScore(0);
+		m_ScoreSliderTeam02.value = TeamManager.Instance.GetGameScore(1);
 
 		if(m_LevelScores[0] == 0 && m_LevelScores[1] == 0)
 		{
@@ -51,8 +59,8 @@ public class MenuController : MonoBehaviour
 		else
 		{
 			TeamManager.Instance.ResetLevelScores();
-			StartCoroutine(DistributePoints());
-		}	
+			m_DistributionRoutine = StartCoroutine(DistributePoints());
+		}
 	}
 
 	private void Update()
@@ -64,15 +72,27 @@ public class MenuController : MonoBehaviour
 
 		if(TeamManager.Instance.GetGameScore(0) >= m_WinningGameScore)
 		{
-			StopCoroutine(DistributePoints());
+			if(m_DistributionRoutine != null)
+			{
+				StopCoroutine(m_DistributionRoutine);
+				m_DistributionRoutine = null;
 
-
+				m_ParticleST01.Stop();
+				m_ParticleST02.Stop();
+			}
+			//Show Winner/Looser
 		}	
 		else if(TeamManager.Instance.GetGameScore(1) >= m_WinningGameScore)
 		{
-			StopCoroutine(DistributePoints());
+			if(m_DistributionRoutine != null)
+			{
+				StopCoroutine(m_DistributionRoutine);
+				m_DistributionRoutine = null;
 
-
+				m_ParticleST01.Stop();
+				m_ParticleST02.Stop();
+			}
+			//Show Winner/Looser
 		}
 	}
 
@@ -94,20 +114,36 @@ public class MenuController : MonoBehaviour
 		float team02Value = m_LevelScores[1]; 
 
 		//Change The Teams Value To a 0 -> 1 base. 1 = the highest level score.
-		if(team01Value < team02Value)
+		if(team01Value != 0 && team02Value != 0)
 		{
-			team01Value = (1f / (team02Value / team01Value));
-			team02Value = 0f; 
-		}
-		else if(team02Value > team01Value)
-		{
-			team02Value = (1f / (team01Value / team02Value));
-			team01Value = 0f;
+			if(team01Value < team02Value)
+			{
+				team01Value = (1f / (team02Value * team01Value));
+				team02Value = 0f; 
+			}
+			else if(team02Value > team01Value)
+			{
+				team02Value = (1f / (team01Value * team02Value));
+				team01Value = 0f;
+			}
+			else
+			{
+				team01Value = 0f;
+				team02Value = 0f;			
+			}
 		}
 		else
 		{
-			team01Value = 0f;
-			team02Value = 0f;			
+			if(team01Value == 0)
+			{
+				team01Value = 1;
+				team02Value = 0;
+			}
+			else if(team02Value == 0)
+			{
+				team01Value = 0;
+				team02Value = 1;		
+			}
 		}
 
 		yield return new WaitForSeconds(1f); //Delay Before The Distribution Start.
@@ -115,7 +151,7 @@ public class MenuController : MonoBehaviour
 		m_ParticleST01.Play();
 		m_ParticleST02.Play();
 
-		while(team01Value <= m_DistributionTime || team02Value <= m_DistributionTime)
+		while(team01Value <= m_DistributionTime && team02Value <= m_DistributionTime)
 		{
 			if(team01Value <= 1f)
 			{
@@ -136,10 +172,18 @@ public class MenuController : MonoBehaviour
 			{
 				m_ParticleST02.Stop();
 			}
+
+			m_ScoreSliderTeam01.value = TeamManager.Instance.GetGameScore(0);
+			m_ScoreSliderTeam02.value = TeamManager.Instance.GetGameScore(1);
+
+			yield return null;
 		}
 
-		ShowText();
+		m_ParticleST01.Stop();
+		m_ParticleST02.Stop();
 
-		yield return null;
+		ShowText();
+		TeamManager.Instance.ResetLevelScores();
+		m_DistributionRoutine = null;
 	}
 }

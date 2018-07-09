@@ -38,6 +38,7 @@ public class LevelManager : MonoBehaviour
 		ChangeScene(EScenes.StartMenu);
 	}
 
+/* 
 	private void Update()
 	{
 		if(Input.GetKeyDown(KeyCode.Space))
@@ -45,6 +46,7 @@ public class LevelManager : MonoBehaviour
 			ChangeScene(EScenes.MainMenu);
 		}
 	}
+*/
 
 	public void ChangeScene(EScenes a_Scene)
 	{
@@ -90,12 +92,12 @@ public class LevelManager : MonoBehaviour
 			m_SceneTransitionImage.color = new Vector4(color.r, color.g, color.b, opacityValue);
 
 			opacityValue +=  Time.deltaTime / m_TransitionTime;
+
+			yield return null;
 		}
 
 		SceneManager.LoadScene((int)a_Scene);
 		SceneManager.sceneLoaded += OnLoadingDone;
-
-		yield return null;
 	}
 
 	private IEnumerator FadeOutScenes()
@@ -110,7 +112,8 @@ public class LevelManager : MonoBehaviour
 			m_SceneTransitionImage.color = new Vector4(color.r, color.g, color.b, opacityValue);
 
 			opacityValue +=  Time.deltaTime / m_TransitionTime;
+			
+			yield return null;
 		}
-		yield return null;
 	}
 }

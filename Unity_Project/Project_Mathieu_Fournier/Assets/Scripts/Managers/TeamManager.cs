@@ -31,7 +31,7 @@ public class TeamManager : MonoBehaviour
 		{
 			m_Instance = this;
 		}
-		DontDestroyOnLoad(gameObject);		
+		DontDestroyOnLoad(gameObject);	
 	}
 
 	public void AssignPlayer() //Mathieu Fournier: Used to set Dynamically the players in one of the Screen Quadrant.
@@ -117,5 +117,11 @@ public class TeamManager : MonoBehaviour
 		{
 			m_Teams[i].LevelScore = 0;	
 		}
+	}
+
+	public void AddTeam()
+	{
+		m_Teams.Add(new Team());
+		m_Teams[0].LevelScore = 10;
 	}
 }

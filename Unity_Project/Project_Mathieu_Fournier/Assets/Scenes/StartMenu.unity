@@ -371,7 +371,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Player Three
+  m_Text: 'Player 3
 
 
     Press a Button'
@@ -466,7 +466,10 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Player One \n\nPress a Button"
+  m_Text: 'Player 1
+
+
+    Press a Button'
 --- !u!222 &808333372
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -558,7 +561,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Player Two\n\n Press a Button"
+  m_Text: "Player 2\n\n Press a Button"
 --- !u!222 &812354283
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -636,7 +639,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: 'Team Two
+  m_text: 'Team 2
 
 '
   m_isRightToLeft: 0
@@ -706,7 +709,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 1037143724}
-    characterCount: 9
+    characterCount: 7
     spriteCount: 0
     spaceCount: 2
     wordCount: 2
@@ -1446,7 +1449,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: Team One
+  m_text: Team 1
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 715b80e429c437e40867928a4e1fc975, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 715b80e429c437e40867928a4e1fc975, type: 2}
@@ -1514,7 +1517,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 1655604911}
-    characterCount: 8
+    characterCount: 6
     spriteCount: 0
     spaceCount: 1
     wordCount: 2
@@ -1823,7 +1826,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Player Four
+  m_Text: 'Player 4
 
 
     Press a Button'
