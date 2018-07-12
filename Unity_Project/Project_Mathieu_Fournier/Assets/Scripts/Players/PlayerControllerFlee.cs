@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
@@ -14,8 +15,6 @@ public class PlayerControllerFlee : MonoBehaviour
 
     [SerializeField]
     private Transform m_GroundRaycaster;
-    [SerializeField]
-    private PlayerFleeUI m_PlayerUI;
     [SerializeField]
     private CinemachineFreeLook m_Cinemachine;
     [SerializeField]
@@ -39,8 +38,11 @@ public class PlayerControllerFlee : MonoBehaviour
     public Transform m_Jar;
     private Transform m_Parent;
     private Rigidbody m_Rigid;
-    private BaseEffect m_PowerUp01;
-    private BaseEffect m_PowerUp02;
+    private BaseEffect[] m_PowerUps = new BaseEffect[2];
+
+    public Action<int> OnPointChanged;
+    public Action<int, PowerupType> OnPowerupAdded;
+    public Action<int> OnPowerupRemoved;
 
     //PROTO Only, To show Feedback!
     public GameObject m_MusicImage;
@@ -66,7 +68,6 @@ public class PlayerControllerFlee : MonoBehaviour
         m_Jar = null;
         m_Parent = null;
         m_Rigid = GetComponent<Rigidbody>();
-        m_PlayerUI.SetText(m_Points);
     }
 
     private void Update()
@@ -112,16 +113,14 @@ public class PlayerControllerFlee : MonoBehaviour
             }
         }
 
-        if(Input.GetButtonDown("Powerup01_" + m_ID.ToString()) && m_PowerUp01 != null)
+        if(Input.GetButtonDown("Powerup01_" + m_ID.ToString()) && m_PowerUps[0] != null)
         {
             ActivatePowerUp(0);
-            m_PowerUp01 = null;
         }
 
-        if(Input.GetButtonDown("Powerup02_" + m_ID.ToString()) && m_PowerUp02 != null)
+        if(Input.GetButtonDown("Powerup02_" + m_ID.ToString()) && m_PowerUps[1] != null)
         {
             ActivatePowerUp(1);
-            m_PowerUp02 = null;
         }
     }
 
@@ -144,17 +143,49 @@ public class PlayerControllerFlee : MonoBehaviour
 
             aCol.gameObject.SetActive(false);
             m_Points++;
-            m_PlayerUI.SetText(m_Points);
+            OnPointChanged(m_Points);
         }
         else if(aCol.tag == "Jar")
         {
             m_Jar = aCol.GetComponent<Transform>();
         }
-        else if(aCol.tag == "Saxophone" || aCol.tag == "Boot")
+        else if(aCol.tag == "Chest")
         {
-            AddPowerUp(aCol.gameObject);
+            if(aCol.GetComponent<Chest>() != null)
+            for (int i = 0; i < m_PowerUps.Length; i++)
+            {
+                if(m_PowerUps[i] == null)
+                {
+                    aCol.GetComponent<Chest>().Loot(this, i);
+                    break;
+                }
+            }
         }
-
+        else if(aCol.tag == "Saxophone")
+        {
+            for (int i = 0; i < m_PowerUps.Length; i++)
+            {
+                if(m_PowerUps[i] == null)
+                {
+                    AddPowerUp(i, PowerupType.Saxophone);
+                    aCol.gameObject.SetActive(false);
+                    break;
+                }
+            }
+        }
+        /* Boots Are Not In The Game Yet. MathF
+        else if(aCol.tag == "Boot")
+        {
+            for (int i = 0; i < m_PowerUps.Length; i++)
+            {
+                if(m_PowerUps[i] == null)
+                {
+                    AddPowerUp(i, PowerupType.Boots);
+                    aCol.gameObject.SetActive(false);
+                }
+            }        
+        }
+        */
     }
 
     //Remove the jar reference if he is no longer at range
@@ -254,7 +285,7 @@ public class PlayerControllerFlee : MonoBehaviour
     {
         m_MoneyBag.transform.localScale = new Vector3(1f, 0.5f, 1f);
         m_Points = 0;
-        m_PlayerUI.SetText(m_Points);
+        OnPointChanged(0);
     }
 
     //Set the player parameters when it hide in a jar or when he is grabbed
@@ -299,68 +330,35 @@ public class PlayerControllerFlee : MonoBehaviour
     }
 
     //Add a powerup to the player if a slot (UI Slot see **PlayerFleeUI**) is empty.
-    public void AddPowerUp(GameObject aPowerUp)
+    public void AddPowerUp(int a_Slot, PowerupType a_Type)
     {
-        if(m_PowerUp01 == null)
+        switch (a_Type)
         {
-            if(aPowerUp.tag == "Saxophone")
+            case PowerupType.Saxophone:
             {
-                m_PowerUp01 = gameObject.AddComponent<SaxophoneEffect>();
-                m_PlayerUI.ShowPowerUp01("Saxophone");         
-            }
-            else if(aPowerUp.tag == "Boot")
-            {
-                //TODO: 
-                //m_PowerUp01 = gameObject.AddComponent<BootEffect>(); 
-                //m_PlayerUI.ShowPowerUp01("Boot");        
-            }
+                m_PowerUps[a_Slot] = gameObject.AddComponent<SaxophoneEffect>();
 
-            aPowerUp.SetActive(false);
-        }
-        else if(m_PowerUp02 == null)
-        {
-            if(aPowerUp.tag == "Saxophone")
+                OnPowerupAdded(a_Slot, PowerupType.Saxophone);
+                break;
+            }  
+            /* No Boots In The Game Yet MathF              
+            case PowerupType.Boots:
             {
-                m_PowerUp02 = gameObject.AddComponent<SaxophoneEffect>();
-                m_PlayerUI.ShowPowerUp02("Saxophone");            
-            }
-            else if(aPowerUp.tag == "Boot")
-            {
-                //TODO:
-                //m_PowerUp02 = gameObject.AddComponent<BootEffect>();    
-                //m_PlayerUI.ShowPowerUp02("Boot");     
-            }
+                m_PowerUps[a_Slot] = gameObject.AddComponent<BootEffect>();
 
-            aPowerUp.SetActive(false);
+                OnPowerupAdded(a_Slot, PowerupType.Boots);
+                break;
+            }
+            */  
         }
     }
 
     //Activate a powerup if there is a powerup in the input corresponding Slot.
-    private void ActivatePowerUp(int aSlot)
+    private void ActivatePowerUp(int a_Slot)
     {
-        if(aSlot == 0)
-        {
-            m_PowerUp01.PlayEffect();
-        }
-        else if(aSlot == 1)
-        {
-            m_PowerUp02.PlayEffect();
-        }
-
-        m_PlayerUI.HidePowerUp(aSlot);
-    }
-
-    //Return true if a powerup slot is empty
-    public bool IsASlotEmpty()
-    {
-        if(m_PowerUp01 == null || m_PowerUp02 == null)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        m_PowerUps[a_Slot].PlayEffect();
+        m_PowerUps[a_Slot] = null;
+        OnPowerupRemoved(a_Slot);
     }
 
     public void SetSpeed(float a_NewSpeed)

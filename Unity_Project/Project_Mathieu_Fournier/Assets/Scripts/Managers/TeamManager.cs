@@ -7,8 +7,8 @@ public class Team
 {
 	public float GameScore; 
 	public int LevelScore;
-	public PlayerRef Player01;
-	public PlayerRef Player02;
+	public Player Player01;
+	public Player Player02;
 }
 
 public class TeamManager : MonoBehaviour 
@@ -34,25 +34,33 @@ public class TeamManager : MonoBehaviour
 		DontDestroyOnLoad(gameObject);	
 	}
 
-	public void AssignPlayer() //Mathieu Fournier: Used to set Dynamically the players in one of the Screen Quadrant.
+	public void AddPlayer(int a_ID, Player a_Player)
 	{
-		if(m_Teams[0].Player01 == null)
+		switch (a_ID)
 		{
-			//Set The Player Control to The First Camera Quadrant.    Top-Left
-		}
-		else if(m_Teams[0].Player01 == null)
-		{
-			//Set The Player Control to The Second Camera Quadrant.   Top-Right
-		}
-		else if(m_Teams[1].Player02 == null)
-		{
-			//Set The Player Control to The Third Camera Quadrant.    Bottom-Left
-		}
-		else if(m_Teams[1].Player02 == null)
-		{
-			//Set The Player Control to The Fourth Camera Quadrant.   Bottom-Right
+			case 1:
+			{
+				m_Teams[0].Player01 = a_Player;
+				break;
+			}			
+			case 2:
+			{
+				m_Teams[1].Player01 = a_Player;
+				break;
+			}
+			case 3:
+			{
+				m_Teams[0].Player02 = a_Player;
+				break;
+			}			
+			case 4:
+			{
+				m_Teams[1].Player02 = a_Player;
+				break;
+			}
 		}
 	}
+
 
 	//Assign a random character to the teams players.
 	public void SetRandomCharacters()
@@ -122,5 +130,52 @@ public class TeamManager : MonoBehaviour
 	public void AddTeam()
 	{
 		m_Teams.Add(new Team());
+	}
+
+	public PlayerControllerFlee GetPlayerFlee(int a_ID)
+	{
+		switch (a_ID)
+		{
+			case 1:
+			{
+				return m_Teams[0].Player01.GetPlayerFlee();
+			}			
+			case 2:
+			{
+				return m_Teams[1].Player01.GetPlayerFlee();
+			}
+			case 3:
+			{
+				return m_Teams[0].Player02.GetPlayerFlee();
+			}			
+			case 4:
+			{
+				return m_Teams[1].Player02.GetPlayerFlee();
+			}
+			default:
+			{
+				return null;				
+			}
+		}
+	}
+
+	public void AssignPlayer() //Mathieu Fournier: Used to set Dynamically the players in one of the Screen Quadrant.
+	{
+		if(m_Teams[0].Player01 == null)
+		{
+			//Set The Player Control to The First Camera Quadrant.    Top-Left
+		}
+		else if(m_Teams[1].Player01 == null)
+		{
+			//Set The Player Control to The Second Camera Quadrant.   Top-Right
+		}
+		else if(m_Teams[0].Player02 == null)
+		{
+			//Set The Player Control to The Third Camera Quadrant.    Bottom-Left
+		}
+		else if(m_Teams[1].Player02 == null)
+		{
+			//Set The Player Control to The Fourth Camera Quadrant.   Bottom-Right
+		}
 	}
 }

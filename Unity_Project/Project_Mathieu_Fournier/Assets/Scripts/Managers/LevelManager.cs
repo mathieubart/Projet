@@ -72,13 +72,11 @@ public class LevelManager : MonoBehaviour
 
 	private IEnumerator FadeInScenes(EScenes a_Scene)
 	{
-		float opacity = 0f;
 		float opacityValue = 0f;
 		Color color = m_SceneTransitionImage.color;
 
 		while(opacityValue < 1)
 		{
-			opacity = Mathf.Lerp(0f, 1f, opacityValue);
 			m_SceneTransitionImage.color = new Vector4(color.r, color.g, color.b, opacityValue);
 
 			opacityValue +=  Time.deltaTime / m_TransitionTime;
@@ -92,13 +90,11 @@ public class LevelManager : MonoBehaviour
 
 	private IEnumerator FadeOutScenes()
 	{
-		float opacity = 0f;
 		float opacityValue = 0f;
 		Color color = m_SceneTransitionImage.color;
 
 		while(opacityValue < 1)
 		{
-			opacity = Mathf.Lerp(1f, 0f, opacityValue);
 			m_SceneTransitionImage.color = new Vector4(color.r, color.g, color.b, opacityValue);
 
 			opacityValue +=  Time.deltaTime / m_TransitionTime;

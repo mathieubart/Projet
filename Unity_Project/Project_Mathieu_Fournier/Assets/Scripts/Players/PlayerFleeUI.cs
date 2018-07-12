@@ -4,61 +4,110 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+public enum PowerupType
+{
+	Saxophone = 0,
+	//Boots = 1 No Boots Yet In The Game. MathF
+}
+
 public class PlayerFleeUI : MonoBehaviour 
 {
+	[SerializeField]
+	private PlayerID m_ID;
+	[SerializeField]
 	private TextMeshProUGUI m_PointTextMesh;
-	
 	[SerializeField]
 	private GameObject m_UISax01;
 	[SerializeField]
 	private GameObject m_UISax02;
+
+	/* No Boots Yet In The Game
 	[SerializeField]
 	private GameObject m_UIBoot01;
 	[SerializeField]
 	private GameObject m_UIBoot02;
+	*/
 	
-	private void Awake()
+	private void Start()
 	{
-		m_PointTextMesh = GetComponent<TextMeshProUGUI>();
+		m_UISax01.SetActive(false);
+		m_UISax02.SetActive(false);
+		/* No Boots Yet In The Game
+		m_UIBoot01.SetActive(false);
+		m_UIBoot02.SetActive(false);
+		*/
+        if(TeamManager.Instance != null)
+        {
+            if(TeamManager.Instance.GetPlayerFlee((int)m_ID) != null)
+            {
+                PlayerControllerFlee player;
+                player = TeamManager.Instance.GetPlayerFlee((int)m_ID);
+                player.OnPointChanged += SetText;
+				player.OnPowerupAdded += AddPowerup;
+				player.OnPowerupRemoved += RemovePowerUp;
+            }
+        }
+		SetText(0);
 	}
 
-	public void SetText(int aNumber)
+	private void SetText(int a_Number)
 	{
-		m_PointTextMesh.text = aNumber.ToString();
+		m_PointTextMesh.text = ((int)a_Number).ToString();
 	}
 
-	public void ShowPowerUp01(string aPowerUp)
+	private void AddPowerup(int a_Slot, PowerupType a_PowerupType)
 	{
-		if(aPowerUp == "Saxophone")
+		ShowPowerUp((int)a_Slot, (PowerupType)a_PowerupType);			
+	}
+
+	public void ShowPowerUp(int a_Slot, PowerupType a_Type)
+	{
+		if(a_Slot == 0)
 		{
-			m_UISax01.SetActive(true);
+			switch (a_Type)
+			{
+				case PowerupType.Saxophone:
+				{
+					m_UISax01.SetActive(true);
+					break;
+				}
+				/* 	No Boots Yet In The Game. MathF
+				case PowerupType.Boots:
+				{
+					m_UIBoot01.SetActive(true);
+					break;
+				}
+				*/
+			}
 		}
-		else if(aPowerUp == "Boot")
+		else if(a_Slot == 1)
 		{
-			m_UIBoot01.SetActive(true);
+			switch (a_Type)
+			{
+				case PowerupType.Saxophone:
+				{
+					m_UISax02.SetActive(true);
+					break;
+				}
+				/* 	No Boots Yet In The Game. MathF
+				case PowerupType.Boots:
+				{
+					m_UIBoot02.SetActive(true);
+					break;
+				}
+				*/
+			}
 		}
 	}
 
-	public void ShowPowerUp02(string aPowerUp)
+	public void RemovePowerUp(int a_Slot)
 	{
-		if(aPowerUp == "Saxophone")
-		{
-			m_UISax02.SetActive(true);
-		}
-		else if(aPowerUp == "Boot")
-		{
-			m_UIBoot02.SetActive(true);
-		}
-	}
-
-	public void HidePowerUp(int aSlot)
-	{
-		if(aSlot == 0)
+		if((int)a_Slot == 0)
 		{
 			m_UISax01.SetActive(false);
 			//m_UIBoot01.SetActive(false);			
 		}
-		else if(aSlot == 1)
+		else if((int)a_Slot == 1)
 		{
 			m_UISax02.SetActive(false);
 			//m_UIBoot02.SetActive(false);	

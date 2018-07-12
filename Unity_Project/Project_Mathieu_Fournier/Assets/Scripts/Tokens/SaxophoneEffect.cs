@@ -13,6 +13,7 @@ public class SaxophoneEffect : BaseEffect
 	private GameObject m_MusicImage;
 	private void Awake()
 	{
+		base.m_Type = PowerupType.Saxophone;
 		m_MusicImage = GetComponent<PlayerControllerFlee>().m_MusicImage;
 	}
 

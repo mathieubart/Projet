@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class BaseEffect : MonoBehaviour
 {
+	public PowerupType m_Type;
+
 	public virtual void PlayEffect()
 	{
 	}
