@@ -102,7 +102,7 @@ public class TeamManager : MonoBehaviour
 	}
 
 	public int GetLevelScore(int a_Team) 
-	{
+	{		
 		return m_Teams[a_Team].LevelScore;
 	}
 
@@ -122,6 +122,5 @@ public class TeamManager : MonoBehaviour
 	public void AddTeam()
 	{
 		m_Teams.Add(new Team());
-		m_Teams[0].LevelScore = 10;
 	}
 }

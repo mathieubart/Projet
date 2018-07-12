@@ -38,16 +38,6 @@ public class LevelManager : MonoBehaviour
 		ChangeScene(EScenes.StartMenu);
 	}
 
-/* 
-	private void Update()
-	{
-		if(Input.GetKeyDown(KeyCode.Space))
-		{
-			ChangeScene(EScenes.MainMenu);
-		}
-	}
-*/
-
 	public void ChangeScene(EScenes a_Scene)
 	{
 		StartCoroutine(FadeInScenes(a_Scene));

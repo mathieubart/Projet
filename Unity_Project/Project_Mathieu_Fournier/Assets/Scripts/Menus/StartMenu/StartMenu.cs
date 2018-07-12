@@ -54,7 +54,7 @@ public class StartMenu : MonoBehaviour
 			
 			if(m_PlayerTwoReady && Input.GetButtonDown("Action_PlayerThree"))
 			{
-				TeamManager.Instance.AddTeam();				
+				TeamManager.Instance.AddTeam();										
 				m_PlayerThreeReady = true;
 				m_StartTexts[2].text = "Ready!";
 				m_StartTexts[2].GetComponent<Animator>().enabled = false;

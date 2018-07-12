@@ -100,11 +100,13 @@ public class PlayerControllerFlee : MonoBehaviour
         {
             if(!m_IsInAJar)
             {
+                m_Jar.GetComponent<Jar>().m_PlayerHidden = this;
                 OnHold(m_Jar);
                 m_IsInAJar = true;
             }
             else 
             {
+                m_Jar.GetComponent<Jar>().m_PlayerHidden = null;
                 OnRelease();
                 m_IsInAJar = false;
             }
@@ -138,7 +140,7 @@ public class PlayerControllerFlee : MonoBehaviour
     {
         if(aCol.tag == "Token")
         {
-            GrowBag(false);
+            GrowBag();
 
             aCol.gameObject.SetActive(false);
             m_Points++;
@@ -236,23 +238,23 @@ public class PlayerControllerFlee : MonoBehaviour
     }
 
     //Grow The Bag Size or reset the Size if the bool is true.
-    private void GrowBag(bool a_Reset)
+    public void GrowBag()
+    {      
+        if(m_MoneyBag.transform.localScale.y <= 1f)
+        {
+            m_MoneyBag.transform.localScale += new Vector3(0f, 0.1f, 0f); 
+        }
+        else if(m_MoneyBag.transform.localScale.z <= 1.5f)
+        {
+            m_MoneyBag.transform.localScale += new Vector3(0.1f, 0f, 0.1f); 
+        }     
+    }
+
+    public void ResetBag()
     {
-        if(a_Reset)
-        {
-            m_MoneyBag.transform.localScale = new Vector3(1f, 0.5f, 1f);
-        }
-        else
-        {
-            if(m_MoneyBag.transform.localScale.y <= 1f)
-            {
-                m_MoneyBag.transform.localScale += new Vector3(0f, 0.1f, 0f); 
-            }
-            else if(m_MoneyBag.transform.localScale.z <= 1.5f)
-            {
-                m_MoneyBag.transform.localScale += new Vector3(0.1f, 0f, 0.1f); 
-            }
-        }
+        m_MoneyBag.transform.localScale = new Vector3(1f, 0.5f, 1f);
+        m_Points = 0;
+        m_PlayerUI.SetText(m_Points);
     }
 
     //Set the player parameters when it hide in a jar or when he is grabbed
@@ -364,5 +366,10 @@ public class PlayerControllerFlee : MonoBehaviour
     public void SetSpeed(float a_NewSpeed)
     {
         m_Speed = a_NewSpeed;
+    }
+
+    public int GetPoints()
+    {
+        return m_Points;
     }
 }

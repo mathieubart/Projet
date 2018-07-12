@@ -108,7 +108,8 @@
      <Compile Include="Assets\Scripts\Enums\EScenes.cs" />
      <Compile Include="Assets\Scripts\Jar\FollowGrabber.cs" />
      <Compile Include="Assets\Scripts\Jar\Jar.cs" />
-     <Compile Include="Assets\Scripts\Level\ExitZone.cs" />
+     <Compile Include="Assets\Scripts\Level\LevelTimer.cs" />
+     <Compile Include="Assets\Scripts\Level\Truck.cs" />
      <Compile Include="Assets\Scripts\Managers\AudioManager.cs" />
      <Compile Include="Assets\Scripts\Managers\LevelManager.cs" />
      <Compile Include="Assets\Scripts\Managers\TeamManager.cs" />
@@ -119,7 +120,6 @@
      <Compile Include="Assets\Scripts\Players\PlayerFleeUI.cs" />
      <Compile Include="Assets\Scripts\Players\PlayerRef.cs" />
      <Compile Include="Assets\Scripts\Players\Proto_PlayerControllerGrab.cs" />
-     <Compile Include="Assets\Scripts\Proto\CharacterSwitch.cs" />
      <Compile Include="Assets\Scripts\ScriptableObjects\PlayerFleeData.cs" />
      <Compile Include="Assets\Scripts\ScriptableObjects\PlayerGrabData.cs" />
      <Compile Include="Assets\Scripts\Tokens\BaseEffect.cs" />

@@ -24,13 +24,13 @@ public class MenuController : MonoBehaviour
 	private ParticleSystem m_ParticleST02; //Particle System Team 02.
 
 	[SerializeField]
-	private Image m_WinTeam01;
+	private GameObject m_WinTeam01;
 	[SerializeField]
-	private Image m_WinTeam02;
+	private GameObject m_WinTeam02;
 	[SerializeField]
-	private Image m_LooseTeam01;
+	private GameObject m_LooseTeam01;
 	[SerializeField]
-	private Image m_LooseTeam02;
+	private GameObject m_LooseTeam02;
 
 	private Coroutine m_DistributionRoutine;
 
@@ -40,6 +40,10 @@ public class MenuController : MonoBehaviour
 	private void Awake()
 	{
 		m_PressStartText.enabled = false;
+		m_WinTeam01.SetActive(false);
+		m_WinTeam02.SetActive(false);
+		m_LooseTeam01.SetActive(false);
+		m_LooseTeam02.SetActive(false);
 		m_ParticleST01.Stop();
 		m_ParticleST02.Stop();
 		m_ScoreSliderTeam01.maxValue = m_WinningGameScore;
@@ -57,7 +61,7 @@ public class MenuController : MonoBehaviour
 			ShowText();
 		}
 		else
-		{
+		{		
 			TeamManager.Instance.ResetLevelScores();
 			m_DistributionRoutine = StartCoroutine(DistributePoints());
 		}
@@ -80,7 +84,8 @@ public class MenuController : MonoBehaviour
 				m_ParticleST01.Stop();
 				m_ParticleST02.Stop();
 			}
-			//Show Winner/Looser
+			m_WinTeam01.SetActive(true);
+			m_LooseTeam02.SetActive(true);
 		}	
 		else if(TeamManager.Instance.GetGameScore(1) >= m_WinningGameScore)
 		{
@@ -92,7 +97,8 @@ public class MenuController : MonoBehaviour
 				m_ParticleST01.Stop();
 				m_ParticleST02.Stop();
 			}
-			//Show Winner/Looser
+			m_WinTeam02.SetActive(true);
+			m_LooseTeam01.SetActive(true);			
 		}
 	}
 
@@ -112,38 +118,18 @@ public class MenuController : MonoBehaviour
 		//Value used to Lerp and Stop the SFX of the Teams at the End of the Distribution Time.
 		float team01Value = m_LevelScores[0]; 
 		float team02Value = m_LevelScores[1]; 
+		float highestScore = team01Value >= team02Value ? team01Value : team02Value;
 
-		//Change The Teams Value To a 0 -> 1 base. 1 = the highest level score.
+		//Change The Teams Value To a 0 -> 1 base. 1 = the highestScore.
 		if(team01Value != 0 && team02Value != 0)
 		{
-			if(team01Value < team02Value)
-			{
-				team01Value = (1f / (team02Value * team01Value));
-				team02Value = 0f; 
-			}
-			else if(team02Value > team01Value)
-			{
-				team02Value = (1f / (team01Value * team02Value));
-				team01Value = 0f;
-			}
-			else
-			{
-				team01Value = 0f;
-				team02Value = 0f;			
-			}
+			team01Value = ((highestScore - team01Value) / highestScore);
+			team02Value = ((highestScore - team02Value) / highestScore);
 		}
 		else
 		{
-			if(team01Value == 0)
-			{
-				team01Value = 1;
-				team02Value = 0;
-			}
-			else if(team02Value == 0)
-			{
-				team01Value = 0;
-				team02Value = 1;		
-			}
+			team01Value = team01Value == 0 ? 1 : 0;
+			team02Value = team02Value == 0 ? 1 : 0;
 		}
 
 		yield return new WaitForSeconds(1f); //Delay Before The Distribution Start.
@@ -151,11 +137,11 @@ public class MenuController : MonoBehaviour
 		m_ParticleST01.Play();
 		m_ParticleST02.Play();
 
-		while(team01Value <= m_DistributionTime && team02Value <= m_DistributionTime)
+		while(team01Value <= 1 || team02Value <= 1)
 		{
 			if(team01Value <= 1f)
 			{
-				TeamManager.Instance.ModifyGameScore(0, Time.deltaTime * m_LevelScores[0]);
+				TeamManager.Instance.ModifyGameScore(0, (Time.deltaTime / m_DistributionTime) * highestScore);
 				team01Value += Time.deltaTime / m_DistributionTime;
 			}
 			else
@@ -165,7 +151,7 @@ public class MenuController : MonoBehaviour
 
 			if(team02Value <= 1f)
 			{
-				TeamManager.Instance.ModifyGameScore(0, Time.deltaTime * m_LevelScores[1]);				
+				TeamManager.Instance.ModifyGameScore(1, (Time.deltaTime / m_DistributionTime) * highestScore);				
 				team02Value += Time.deltaTime / m_DistributionTime;
 			}
 			else
