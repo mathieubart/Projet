@@ -25,7 +25,7 @@ public class JarStunEffect : MonoBehaviour
 
 		if(m_PlayerGrab != null)
 		{
-			m_BaseSpeed = m_PlayerGrab.m_Speed;
+			m_BaseSpeed = m_PlayerGrab.Speed;
 			m_PlayerGrab.SetSpeed(0f); 
 			StartCoroutine("EffectTimer");
 		}

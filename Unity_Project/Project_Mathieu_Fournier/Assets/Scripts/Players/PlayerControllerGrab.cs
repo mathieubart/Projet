@@ -8,8 +8,11 @@ public class PlayerControllerGrab : MonoBehaviour
     private PlayerGrabData m_PlayerData;
     private PlayerID m_ID;
 
-    [HideInInspector]
-    public float m_Speed;
+    private float m_Speed;
+    public float Speed
+    {
+        get{ return m_Speed;}
+    }
 
     private float m_RotationSpeed;
     private float m_ThrowForce;

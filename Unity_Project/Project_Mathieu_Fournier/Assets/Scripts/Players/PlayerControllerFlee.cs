@@ -11,6 +11,10 @@ public class PlayerControllerFlee : MonoBehaviour
     private PlayerID m_ID;
 
     private float m_Speed;
+    public float Speed
+    {
+        get{ return m_Speed;}
+    }
     private float m_RotationSpeed;
 
     [SerializeField]

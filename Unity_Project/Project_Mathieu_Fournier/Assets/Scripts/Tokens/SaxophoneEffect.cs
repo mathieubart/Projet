@@ -7,7 +7,9 @@ public class SaxophoneEffect : BaseEffect
 	[HideInInspector]
 	public float m_EffectDuration = 3f;
 	private List<PlayerControllerGrab> m_Grabbers = new List<PlayerControllerGrab>();
-	private List<float> m_BaseSpeed = new List<float>();
+	private List<PlayerControllerFlee> m_Runners = new List<PlayerControllerFlee>();
+	private List<float> m_BaseGrabbersSpeed = new List<float>();
+	private List<float> m_BaseRunnersSpeed = new List<float>();
 
 	//PROTO_ONLY
 	private GameObject m_MusicImage;
@@ -19,7 +21,8 @@ public class SaxophoneEffect : BaseEffect
 
 	public override void PlayEffect()
 	{
-		SetCharactersSpeedToZero();
+		SetGrabbersSpeedToZero();
+		SetRunnersSpeedToZero();
 		m_MusicImage.SetActive(true);
 		StartCoroutine("EffectTimer");
 	}
@@ -33,31 +36,73 @@ public class SaxophoneEffect : BaseEffect
 		Destroy(this);	
 	}
 
-	private void SetCharactersSpeedToZero()
+	private void SetGrabbersSpeedToZero()
 	{
 		RaycastHit[] spherecastHifos;
 
-		spherecastHifos = Physics.SphereCastAll(transform.position, 5f, transform.position, 0f, LayerMask.GetMask("PlayerGrab", "PlayerFlee"));
+		spherecastHifos = Physics.SphereCastAll(transform.position, 5f, transform.position, 0f, LayerMask.GetMask("PlayerGrab"));
 
 		if(spherecastHifos.Length != 0)
 		{
 			m_Grabbers.Clear();
-			m_BaseSpeed.Clear();
+			m_BaseGrabbersSpeed.Clear();
 			for (int i = 0; i < spherecastHifos.Length; i++)
 			{
-				if(!m_Grabbers.Contains(spherecastHifos[i].collider.GetComponent<PlayerControllerGrab>()))
+				if(spherecastHifos[i].collider.GetComponent<PlayerControllerGrab>())
 				{
-					m_Grabbers.Add(spherecastHifos[i].collider.GetComponent<PlayerControllerGrab>());
-					if(m_Grabbers[i].m_Speed != 0)
+					if(!m_Grabbers.Contains(spherecastHifos[i].collider.GetComponent<PlayerControllerGrab>()))
 					{
-						m_BaseSpeed.Add(m_Grabbers[i].m_Speed);
-						m_Grabbers[i].SetSpeed(0f);
+						m_Grabbers.Add(spherecastHifos[i].collider.GetComponent<PlayerControllerGrab>());
+						if(m_Grabbers[i].Speed != 0)
+						{
+							m_BaseGrabbersSpeed.Add(m_Grabbers[i].Speed);
+							m_Grabbers[i].SetSpeed(0f);
+						}
+						else
+						{
+							GetComponent<SaxophoneEffect>().m_EffectDuration += m_EffectDuration;
+							Destroy(this);
+						}
 					}
-					else
+				}
+			}
+		}
+	}
+
+	private void SetRunnersSpeedToZero()
+	{
+		RaycastHit[] spherecastHifos;
+
+		spherecastHifos = Physics.SphereCastAll(transform.position, 5f, transform.position, 0f, LayerMask.GetMask("PlayerFlee"));
+
+		if(spherecastHifos.Length != 0)
+		{
+			m_Runners.Clear();
+			m_BaseRunnersSpeed.Clear();
+			for (int i = 0; i < spherecastHifos.Length; i++)
+			{
+				if(spherecastHifos[i].collider.GetComponent<PlayerControllerFlee>()) //Does the sphereCast detected a Runner
+				{
+					if(!m_Runners.Contains(spherecastHifos[i].collider.GetComponent<PlayerControllerFlee>())) // Is The Runner already Frozen
 					{
-						GetComponent<SaxophoneEffect>().m_EffectDuration *= 2;
-						Destroy(this);
-					}
+						m_Runners.Add(spherecastHifos[i].collider.GetComponent<PlayerControllerFlee>());
+
+						if(m_Runners[i].Speed != 0) // Freeze
+						{
+							m_BaseRunnersSpeed.Add(m_Runners[i].Speed);
+
+							if(m_Runners[i] != gameObject.GetComponent<PlayerControllerFlee>()) // Am I the Target Of My Own Saxophone
+							{
+								m_Runners[i].SetSpeed(0f);
+							}
+						}
+						else // Already Frozen, Add Effect duration
+						{
+							GetComponent<SaxophoneEffect>().m_EffectDuration += m_EffectDuration;
+							Destroy(this);
+						}
+						
+					}					
 				}
 			}
 		}
@@ -65,12 +110,14 @@ public class SaxophoneEffect : BaseEffect
 
 	private void ResetCharactersSpeed()
 	{
-		if(m_Grabbers != null)
+		for (int i = 0; i < m_Grabbers.Count; i++)
 		{
-			for (int i = 0; i < m_Grabbers.Count; i++)
-			{
-				m_Grabbers[i].SetSpeed(m_BaseSpeed[i]);
-			}
+			m_Grabbers[i].SetSpeed(m_BaseGrabbersSpeed[i]);
 		}
+
+		for (int i = 0; i < m_Runners.Count; i++)
+		{
+			m_Runners[i].SetSpeed(m_BaseRunnersSpeed[i]);
+		}	
 	}
 }
