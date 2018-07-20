@@ -96,6 +96,8 @@
      <Compile Include="Assets\Cinemachine\Timeline\Editor\CinemachineShotEditor.cs" />
      <Compile Include="Assets\Editor\EnumModifierEditor.cs" />
      <Compile Include="Assets\Editor\SceneAutoLoader.cs" />
+     <None Include="Assets\FbxExporters\Editor\FbxSdk\LICENSE.txt" />
+     <None Include="Assets\FbxExporters\Editor\FbxSdk\README.txt" />
  <Reference Include="Vuforia.UnityExtensions.Editor">
  <HintPath>C:/Program Files/Unity2017.4/Editor/Data/PlaybackEngines/VuforiaSupport/Managed/Editor/Vuforia.UnityExtensions.Editor.dll</HintPath>
  </Reference>
@@ -203,6 +205,15 @@
  </Reference>
  <Reference Include="UnityEngine.StandardEvents">
  <HintPath>C:/ProgramData/Unity/cache/packages/packages.unity.com/com.unity.standardevents@1.0.10/UnityEngine.StandardEvents.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityFbxSdk">
+ <HintPath>D:/Users/1810042/Desktop/Projet/Projet/Unity_Project/Project_Mathieu_Fournier/Assets/FbxExporters/Editor/FbxSdk/Plugins/UnityFbxSdk.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityFbxPrefab">
+ <HintPath>D:/Users/1810042/Desktop/Projet/Projet/Unity_Project/Project_Mathieu_Fournier/Assets/FbxExporters/UnityFbxPrefab.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityFbxExporterEditor">
+ <HintPath>D:/Users/1810042/Desktop/Projet/Projet/Unity_Project/Project_Mathieu_Fournier/Assets/FbxExporters/Editor/UnityFbxExporterEditor.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.iOS.Extensions.Xcode">
  <HintPath>C:/Program Files/Unity2017.4/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
