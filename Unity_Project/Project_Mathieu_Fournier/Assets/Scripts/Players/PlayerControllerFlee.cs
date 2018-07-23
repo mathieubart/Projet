@@ -76,12 +76,13 @@ public class PlayerControllerFlee : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetAxis("Forward_" + m_ID.ToString()) > 0f && !RaycastPlayerForward())
+        if (Input.GetAxis("Forward_" + m_ID.ToString()) > 0f || Input.GetAxis("LeftAnalogY_" + m_ID.ToString()) > 0f
+            && !RaycastPlayerForward())
         {
             m_MoveDirection = transform.forward * m_Speed;
   
         }
-        else if(Input.GetAxis("Forward_" + m_ID.ToString()) < 0f)
+        else if(Input.GetAxis("Forward_" + m_ID.ToString()) < 0f || Input.GetAxis("LeftAnalogY_" + m_ID.ToString()) < 0f)
         {
             m_MoveDirection = -transform.forward * m_Speed;
         }
@@ -233,11 +234,11 @@ public class PlayerControllerFlee : MonoBehaviour
 
         if(!m_HisHeld && IsGrounded() && !m_IsInAJar)
         {
-            if (Input.GetAxis("Horizontal_" + m_ID.ToString()) < 0f)
+            if (Input.GetAxis("Horizontal_" + m_ID.ToString()) < 0f || Input.GetAxis("LeftAnalogX_" + m_ID.ToString()) < 0f)
             {
                 m_Direction -= transform.right;
             }
-            if (Input.GetAxis("Horizontal_" + m_ID.ToString()) > 0f)
+            if (Input.GetAxis("Horizontal_" + m_ID.ToString()) > 0f || Input.GetAxis("LeftAnalogX_" + m_ID.ToString()) > 0f)
             {
                 m_Direction += transform.right;
             }

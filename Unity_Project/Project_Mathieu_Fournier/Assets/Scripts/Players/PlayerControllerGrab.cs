@@ -68,12 +68,13 @@ public class PlayerControllerGrab : MonoBehaviour
             m_StunnedFeedback.SetActive(true);
         }
 
-        if (Input.GetAxis("Forward_" + m_ID) > 0f && IsNothingInFrontOfPlayer())
+        if (Input.GetAxis("Forward_" + m_ID) > 0f || Input.GetAxis("LeftAnalogY_" + m_ID.ToString()) > 0f 
+            && IsNothingInFrontOfPlayer())
         {
             m_MoveDirection = transform.forward * m_Speed;
   
         }
-        else if(Input.GetAxis("Forward_" + m_ID) < 0f)
+        else if(Input.GetAxis("Forward_" + m_ID) < 0f || Input.GetAxis("LeftAnalogY_" + m_ID.ToString()) < 0f)
         {
             m_MoveDirection = -transform.forward * m_Speed;
         }
@@ -132,11 +133,11 @@ public class PlayerControllerGrab : MonoBehaviour
     {
         m_Direction = Vector3.zero;
 
-        if (Input.GetAxis("Horizontal_" + m_ID) < 0f)
+        if (Input.GetAxis("Horizontal_" + m_ID) < 0f || Input.GetAxis("LeftAnalogX_" + m_ID.ToString()) < 0f)
         {
             m_Direction -= transform.right;
         }
-        if (Input.GetAxis("Horizontal_" + m_ID) > 0f)
+        if (Input.GetAxis("Horizontal_" + m_ID) > 0f || Input.GetAxis("LeftAnalogX_" + m_ID.ToString()) > 0f)
         {
             m_Direction += transform.right;
         }

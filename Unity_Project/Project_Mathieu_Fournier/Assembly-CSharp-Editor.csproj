@@ -179,11 +179,20 @@
  <Reference Include="UnityEditor.WindowsStandalone.Extensions">
  <HintPath>C:/Program Files/Unity2017.4/Editor/Data/PlaybackEngines/windowsstandalonesupport/UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
  </Reference>
+ <Reference Include="UnityFbxPrefab">
+ <HintPath>F:/Bart/Projet01/Projet_Alpha/Bureau/Projet/Projet/Unity_Project/Project_Mathieu_Fournier/Assets/FbxExporters/UnityFbxPrefab.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityFbxExporterEditor">
+ <HintPath>F:/Bart/Projet01/Projet_Alpha/Bureau/Projet/Projet/Unity_Project/Project_Mathieu_Fournier/Assets/FbxExporters/Editor/UnityFbxExporterEditor.dll</HintPath>
+ </Reference>
+ <Reference Include="UnityFbxSdk">
+ <HintPath>F:/Bart/Projet01/Projet_Alpha/Bureau/Projet/Projet/Unity_Project/Project_Mathieu_Fournier/Assets/FbxExporters/Editor/FbxSdk/Plugins/UnityFbxSdk.dll</HintPath>
+ </Reference>
  <Reference Include="TextMeshPro-2017.3-Editor">
- <HintPath>D:/Users/1810042/Desktop/Projet/Projet/Unity_Project/Project_Mathieu_Fournier/Assets/TextMesh Pro/Plugins/Editor DLL/TextMeshPro-2017.3-Editor.dll</HintPath>
+ <HintPath>F:/Bart/Projet01/Projet_Alpha/Bureau/Projet/Projet/Unity_Project/Project_Mathieu_Fournier/Assets/TextMesh Pro/Plugins/Editor DLL/TextMeshPro-2017.3-Editor.dll</HintPath>
  </Reference>
  <Reference Include="TextMeshPro-2017.3-Runtime">
- <HintPath>D:/Users/1810042/Desktop/Projet/Projet/Unity_Project/Project_Mathieu_Fournier/Assets/TextMesh Pro/Plugins/Editor DLL/TextMeshPro-2017.3-Runtime.dll</HintPath>
+ <HintPath>F:/Bart/Projet01/Projet_Alpha/Bureau/Projet/Projet/Unity_Project/Project_Mathieu_Fournier/Assets/TextMesh Pro/Plugins/Editor DLL/TextMeshPro-2017.3-Runtime.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.Advertisements">
  <HintPath>C:/ProgramData/Unity/cache/packages/packages.unity.com/com.unity.ads@2.0.4/UnityEngine.Advertisements.dll</HintPath>
@@ -205,15 +214,6 @@
  </Reference>
  <Reference Include="UnityEngine.StandardEvents">
  <HintPath>C:/ProgramData/Unity/cache/packages/packages.unity.com/com.unity.standardevents@1.0.10/UnityEngine.StandardEvents.dll</HintPath>
- </Reference>
- <Reference Include="UnityFbxSdk">
- <HintPath>D:/Users/1810042/Desktop/Projet/Projet/Unity_Project/Project_Mathieu_Fournier/Assets/FbxExporters/Editor/FbxSdk/Plugins/UnityFbxSdk.dll</HintPath>
- </Reference>
- <Reference Include="UnityFbxPrefab">
- <HintPath>D:/Users/1810042/Desktop/Projet/Projet/Unity_Project/Project_Mathieu_Fournier/Assets/FbxExporters/UnityFbxPrefab.dll</HintPath>
- </Reference>
- <Reference Include="UnityFbxExporterEditor">
- <HintPath>D:/Users/1810042/Desktop/Projet/Projet/Unity_Project/Project_Mathieu_Fournier/Assets/FbxExporters/Editor/UnityFbxExporterEditor.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.iOS.Extensions.Xcode">
  <HintPath>C:/Program Files/Unity2017.4/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>

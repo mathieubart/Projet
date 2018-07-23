@@ -13,6 +13,8 @@ public class Team
 
 public class TeamManager : MonoBehaviour 
 {
+    [SerializeField]
+    private List<Player> m_PlayerPrefabs;
 	private List<Team> m_Teams = new List<Team>();
 
 	private static TeamManager m_Instance;

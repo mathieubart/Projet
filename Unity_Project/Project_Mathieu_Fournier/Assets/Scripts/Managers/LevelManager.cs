@@ -40,6 +40,16 @@ public class LevelManager : MonoBehaviour
 
 	public void ChangeScene(EScenes a_Scene)
 	{
+		/* 
+        if(SceneManager.GetActiveScene().name == "StartMenu")
+        {
+            TeamManager.Instance.SetRandomCharacters();
+        }
+        else if(SceneManager.GetActiveScene().name == "Levels")
+        {
+            TeamManager.Instance.SwitchCharacters();
+        }
+*/
 		StartCoroutine(FadeInScenes(a_Scene));
 	}
 
@@ -59,6 +69,7 @@ public class LevelManager : MonoBehaviour
                 }            
 			case (int)EScenes.MainMenu:
                 {
+                    
                     //AudioManager.Instance.SwitchMusic("XXYYXX - Rad Racer", 0.1f);
                     break;
                 }
