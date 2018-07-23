@@ -134,25 +134,25 @@ public class TeamManager : MonoBehaviour
 		m_Teams.Add(new Team());
 	}
 
-	public PlayerControllerFlee GetPlayerFlee(int a_ID)
+	public Runner GetRunner(int a_ID)
 	{
 		switch (a_ID)
 		{
 			case 1:
 			{
-				return m_Teams[0].Player01.GetPlayerFlee();
+				return m_Teams[0].Player01.GetRunner();
 			}			
 			case 2:
 			{
-				return m_Teams[1].Player01.GetPlayerFlee();
+				return m_Teams[1].Player01.GetRunner();
 			}
 			case 3:
 			{
-				return m_Teams[0].Player02.GetPlayerFlee();
+				return m_Teams[0].Player02.GetRunner();
 			}			
 			case 4:
 			{
-				return m_Teams[1].Player02.GetPlayerFlee();
+				return m_Teams[1].Player02.GetRunner();
 			}
 			default:
 			{

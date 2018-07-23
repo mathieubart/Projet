@@ -105,6 +105,7 @@
      <Compile Include="Assets\Cinemachine\Timeline\CinemachineShot.cs" />
      <Compile Include="Assets\Cinemachine\Timeline\CinemachineTrack.cs" />
      <Compile Include="Assets\Scripts\Chest\Chest.cs" />
+     <Compile Include="Assets\Scripts\Enums\EPoolType.cs" />
      <Compile Include="Assets\Scripts\Enums\EScenes.cs" />
      <Compile Include="Assets\Scripts\Jar\FollowGrabber.cs" />
      <Compile Include="Assets\Scripts\Jar\Jar.cs" />
@@ -112,15 +113,18 @@
      <Compile Include="Assets\Scripts\Level\Truck.cs" />
      <Compile Include="Assets\Scripts\Managers\AudioManager.cs" />
      <Compile Include="Assets\Scripts\Managers\LevelManager.cs" />
+     <Compile Include="Assets\Scripts\Managers\PoolManager.cs" />
      <Compile Include="Assets\Scripts\Managers\TeamManager.cs" />
      <Compile Include="Assets\Scripts\Menus\MainMenu\MenuController.cs" />
      <Compile Include="Assets\Scripts\Menus\StartMenu\StartMenu.cs" />
+     <Compile Include="Assets\Scripts\Players\Character.cs" />
+     <Compile Include="Assets\Scripts\Players\Grabber.cs" />
      <Compile Include="Assets\Scripts\Players\Player.cs" />
-     <Compile Include="Assets\Scripts\Players\PlayerControllerFlee.cs" />
-     <Compile Include="Assets\Scripts\Players\PlayerControllerGrab.cs" />
      <Compile Include="Assets\Scripts\Players\PlayerFleeUI.cs" />
-     <Compile Include="Assets\Scripts\ScriptableObjects\PlayerFleeData.cs" />
-     <Compile Include="Assets\Scripts\ScriptableObjects\PlayerGrabData.cs" />
+     <Compile Include="Assets\Scripts\Players\Runner.cs" />
+     <Compile Include="Assets\Scripts\PoolItem.cs" />
+     <Compile Include="Assets\Scripts\ScriptableObjects\CharacterData.cs" />
+     <Compile Include="Assets\Scripts\ScriptableObjects\GrabberData.cs" />
      <Compile Include="Assets\Scripts\Tokens\BaseEffect.cs" />
      <Compile Include="Assets\Scripts\Tokens\BootEffect.cs" />
      <Compile Include="Assets\Scripts\Tokens\JarStunEffect.cs" />
@@ -214,13 +218,13 @@
  <HintPath>C:/Program Files/Unity2017.4/Editor/Data/UnityExtensions/Unity/UnitySpatialTracking/RuntimeEditor/UnityEngine.SpatialTracking.dll</HintPath>
  </Reference>
  <Reference Include="UnityFbxPrefab">
- <HintPath>F:/Bart/Projet01/Projet_Alpha/Bureau/Projet/Projet/Unity_Project/Project_Mathieu_Fournier/Assets/FbxExporters/UnityFbxPrefab.dll</HintPath>
+ <HintPath>D:/Users/1810042/Desktop/Projet/Projet/Unity_Project/Project_Mathieu_Fournier/Assets/FbxExporters/UnityFbxPrefab.dll</HintPath>
  </Reference>
  <Reference Include="TextMeshPro-2017.3-Editor">
- <HintPath>F:/Bart/Projet01/Projet_Alpha/Bureau/Projet/Projet/Unity_Project/Project_Mathieu_Fournier/Assets/TextMesh Pro/Plugins/Editor DLL/TextMeshPro-2017.3-Editor.dll</HintPath>
+ <HintPath>D:/Users/1810042/Desktop/Projet/Projet/Unity_Project/Project_Mathieu_Fournier/Assets/TextMesh Pro/Plugins/Editor DLL/TextMeshPro-2017.3-Editor.dll</HintPath>
  </Reference>
  <Reference Include="TextMeshPro-2017.3-Runtime">
- <HintPath>F:/Bart/Projet01/Projet_Alpha/Bureau/Projet/Projet/Unity_Project/Project_Mathieu_Fournier/Assets/TextMesh Pro/Plugins/Editor DLL/TextMeshPro-2017.3-Runtime.dll</HintPath>
+ <HintPath>D:/Users/1810042/Desktop/Projet/Projet/Unity_Project/Project_Mathieu_Fournier/Assets/TextMesh Pro/Plugins/Editor DLL/TextMeshPro-2017.3-Runtime.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.Advertisements">
  <HintPath>C:/ProgramData/Unity/cache/packages/packages.unity.com/com.unity.ads@2.0.4/UnityEngine.Advertisements.dll</HintPath>

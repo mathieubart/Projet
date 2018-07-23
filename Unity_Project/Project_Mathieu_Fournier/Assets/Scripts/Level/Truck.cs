@@ -13,9 +13,9 @@ public class Truck : MonoBehaviour
 	{	
 		if(aCol.name == "CharacterFlee" )
 		{
-			int points = aCol.GetComponent<PlayerControllerFlee>().GetPoints();
+			int points = aCol.GetComponent<Runner>().GetPoints();
 			TeamManager.Instance.ModifyLevelScore(m_TeamAssigned, points);
-			aCol.GetComponent<PlayerControllerFlee>().ResetBag();
+			aCol.GetComponent<Runner>().ResetBag();
 		}
 		else if(aCol.transform.tag == "Jar" && aCol.GetComponent<Jar>().m_IsHiddingThePlayer)
 		{

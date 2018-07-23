@@ -6,7 +6,7 @@ public class JarStunEffect : MonoBehaviour
 {
 	private float m_EffectDuration = 3f;
 	private float m_BaseSpeed;
-	private PlayerControllerGrab m_PlayerGrab;
+	private Grabber m_PlayerGrab;
 
 	private void Awake()
 	{
@@ -21,7 +21,7 @@ public class JarStunEffect : MonoBehaviour
 
 	private void Start()
 	{
-		m_PlayerGrab = gameObject.GetComponent<PlayerControllerGrab>();
+		m_PlayerGrab = gameObject.GetComponent<Grabber>();
 
 		if(m_PlayerGrab != null)
 		{

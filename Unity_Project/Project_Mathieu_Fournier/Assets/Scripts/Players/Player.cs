@@ -10,8 +10,6 @@ public class Player : MonoBehaviour
 	private GameObject m_Runner;
 	[SerializeField]
 	private GameObject m_Grabber;
-	[SerializeField]
-	private GameObject m_PlayerUI;
 
 	private void Awake()
 	{
@@ -25,18 +23,16 @@ public class Player : MonoBehaviour
 	{
 		m_Runner.SetActive(a_IsRunnerActive);
 		m_Grabber.SetActive(!a_IsRunnerActive);
-		m_PlayerUI.SetActive(a_IsRunnerActive);
 	}
 
 	public void SwitchActiveCharacter()
 	{
 		m_Runner.SetActive(!m_Runner.activeSelf);
-		m_Grabber.SetActive(!m_Grabber.activeSelf);		
-		m_PlayerUI.SetActive(m_Runner.activeSelf);		
+		m_Grabber.SetActive(!m_Grabber.activeSelf);			
 	}
 
-	public PlayerControllerFlee GetPlayerFlee()
+	public Runner GetRunner()
 	{
-		return m_Runner.GetComponent<PlayerControllerFlee>();
+		return m_Runner.GetComponent<Runner>();
 	}
 }

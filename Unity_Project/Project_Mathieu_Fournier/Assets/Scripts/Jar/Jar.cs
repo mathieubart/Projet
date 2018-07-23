@@ -7,7 +7,7 @@ public class Jar : MonoBehaviour
 	[HideInInspector]
 	public bool m_IsHiddingThePlayer = false;
 	[HideInInspector]
-	public PlayerControllerFlee m_PlayerHidden;
+	public Runner m_PlayerHidden;
 
 	public void OnHold(Transform a_Parent)
 	{

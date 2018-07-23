@@ -38,10 +38,10 @@ public class PlayerFleeUI : MonoBehaviour
 		*/
         if(TeamManager.Instance != null)
         {
-            if(TeamManager.Instance.GetPlayerFlee((int)m_ID) != null)
+            if(TeamManager.Instance.GetRunner((int)m_ID) != null)
             {
-                PlayerControllerFlee player;
-                player = TeamManager.Instance.GetPlayerFlee((int)m_ID);
+                Runner player;
+                player = TeamManager.Instance.GetRunner((int)m_ID);
                 player.OnPointChanged += SetText;
 				player.OnPowerupAdded += AddPowerup;
 				player.OnPowerupRemoved += RemovePowerUp;

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Chest : MonoBehaviour 
 {
-	public void Loot(PlayerControllerFlee a_Player, int a_Slot)
+	public void Loot(Runner a_Player, int a_Slot)
 	{
 		int randomPowerUp = Random.Range(0, 2);
 		a_Player.AddPowerUp(a_Slot, (PowerupType)randomPowerUp);	

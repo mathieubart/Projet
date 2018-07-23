@@ -6,8 +6,8 @@ public class SaxophoneEffect : BaseEffect
 {
 	[HideInInspector]
 	public float m_EffectDuration = 3f;
-	private List<PlayerControllerGrab> m_Grabbers = new List<PlayerControllerGrab>();
-	private List<PlayerControllerFlee> m_Runners = new List<PlayerControllerFlee>();
+	private List<Grabber> m_Grabbers = new List<Grabber>();
+	private List<Runner> m_Runners = new List<Runner>();
 	private List<float> m_BaseGrabbersSpeed = new List<float>();
 	private List<float> m_BaseRunnersSpeed = new List<float>();
 
@@ -16,7 +16,7 @@ public class SaxophoneEffect : BaseEffect
 	private void Awake()
 	{
 		base.m_Type = PowerupType.Saxophone;
-		m_MusicImage = GetComponent<PlayerControllerFlee>().m_MusicImage;
+		m_MusicImage = GetComponent<Runner>().m_MusicImage;
 	}
 
 	public override void PlayEffect()
@@ -48,11 +48,11 @@ public class SaxophoneEffect : BaseEffect
 			m_BaseGrabbersSpeed.Clear();
 			for (int i = 0; i < spherecastHifos.Length; i++)
 			{
-				if(spherecastHifos[i].collider.GetComponent<PlayerControllerGrab>())
+				if(spherecastHifos[i].collider.GetComponent<Grabber>())
 				{
-					if(!m_Grabbers.Contains(spherecastHifos[i].collider.GetComponent<PlayerControllerGrab>()))
+					if(!m_Grabbers.Contains(spherecastHifos[i].collider.GetComponent<Grabber>()))
 					{
-						m_Grabbers.Add(spherecastHifos[i].collider.GetComponent<PlayerControllerGrab>());
+						m_Grabbers.Add(spherecastHifos[i].collider.GetComponent<Grabber>());
 						if(m_Grabbers[i].Speed != 0)
 						{
 							m_BaseGrabbersSpeed.Add(m_Grabbers[i].Speed);
@@ -81,17 +81,17 @@ public class SaxophoneEffect : BaseEffect
 			m_BaseRunnersSpeed.Clear();
 			for (int i = 0; i < spherecastHifos.Length; i++)
 			{
-				if(spherecastHifos[i].collider.GetComponent<PlayerControllerFlee>()) //Does the sphereCast detected a Runner
+				if(spherecastHifos[i].collider.GetComponent<Runner>()) //Does the sphereCast detected a Runner
 				{
-					if(!m_Runners.Contains(spherecastHifos[i].collider.GetComponent<PlayerControllerFlee>())) // Is The Runner already Frozen
+					if(!m_Runners.Contains(spherecastHifos[i].collider.GetComponent<Runner>())) // Is The Runner already Frozen
 					{
-						m_Runners.Add(spherecastHifos[i].collider.GetComponent<PlayerControllerFlee>());
+						m_Runners.Add(spherecastHifos[i].collider.GetComponent<Runner>());
 
 						if(m_Runners[i].Speed != 0) // Freeze
 						{
 							m_BaseRunnersSpeed.Add(m_Runners[i].Speed);
 
-							if(m_Runners[i] != gameObject.GetComponent<PlayerControllerFlee>()) // Am I the Target Of My Own Saxophone
+							if(m_Runners[i] != gameObject.GetComponent<Runner>()) // Am I the Target Of My Own Saxophone
 							{
 								m_Runners[i].SetSpeed(0f);
 							}
