@@ -37,7 +37,6 @@ public class StartMenu : MonoBehaviour
 		{
 			if(Input.GetButtonDown("Action_PlayerOne"))
 			{
-				TeamManager.Instance.AddTeam();
 				m_PlayerOneReady = true;
 				m_StartTexts[0].text = "Ready!";
 				m_StartTexts[0].GetComponent<Animator>().enabled = false;
@@ -45,7 +44,7 @@ public class StartMenu : MonoBehaviour
 			}
 			
 			if(m_PlayerOneReady && Input.GetButtonDown("Action_PlayerTwo"))
-			{
+			{			
 				m_PlayerTwoReady = true;
 				m_StartTexts[1].text = "Ready!";	
 				m_StartTexts[1].GetComponent<Animator>().enabled = false;
@@ -53,8 +52,7 @@ public class StartMenu : MonoBehaviour
 			}
 			
 			if(m_PlayerTwoReady && Input.GetButtonDown("Action_PlayerThree"))
-			{
-				TeamManager.Instance.AddTeam();										
+			{							
 				m_PlayerThreeReady = true;
 				m_StartTexts[2].text = "Ready!";
 				m_StartTexts[2].GetComponent<Animator>().enabled = false;
@@ -62,7 +60,7 @@ public class StartMenu : MonoBehaviour
 			}
 			
 			if(m_PlayerThreeReady && Input.GetButtonDown("Action_PlayerFour"))
-			{
+			{											
 				m_PlayerFourReady = true;
 				m_StartTexts[3].text = "Ready!";
 				m_StartTexts[3].GetComponent<Animator>().enabled = false;

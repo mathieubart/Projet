@@ -21,9 +21,9 @@ GameObject:
   - component: {fileID: 4875679890750690}
   - component: {fileID: 114962331898453562}
   - component: {fileID: 65432289900648514}
-  m_Layer: 23
+  m_Layer: 0
   m_Name: ChestTrigger
-  m_TagString: Untagged
+  m_TagString: Chest
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -41,7 +41,7 @@ GameObject:
   - component: {fileID: 65212031362515012}
   m_Layer: 0
   m_Name: Chest
-  m_TagString: Untagged
+  m_TagString: Chest
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -52,8 +52,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1572582537765952}
-  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 4.89}
+  m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0.167, y: 0, z: 4.89}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4875679890750690}
@@ -67,7 +67,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1238771060944062}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0, y: 0, z: 0.855}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4825785653943610}
@@ -136,8 +136,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.6000003, y: 0.7713751, z: 2}
-  m_Center: {x: -0.80000013, y: 0.38568756, z: 0.35000008}
+  m_Size: {x: 2.25, y: 0.7713751, z: 1.25}
+  m_Center: {x: -0.80000013, y: 0.38568756, z: -0.35}
 --- !u!114 &114962331898453562
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -149,5 +149,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8191cd193c6dd9469cef877c3689f70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Saxophone: {fileID: 1556677924018834, guid: fa9e83961555c0b4da68993ac47014a4,
-    type: 2}

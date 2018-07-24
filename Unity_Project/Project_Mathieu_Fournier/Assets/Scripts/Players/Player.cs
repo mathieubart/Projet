@@ -6,17 +6,21 @@ public class Player : MonoBehaviour
 {
 	[SerializeField]
 	private PlayerID m_ID;
+	public int ID
+	{
+		get {return (int)m_ID;}
+	}
 	[SerializeField]
 	private GameObject m_Runner;
+	public GameObject Runner
+	{
+		get {return m_Runner;}
+	}
 	[SerializeField]
 	private GameObject m_Grabber;
-
-	private void Awake()
+	public GameObject Grabber
 	{
-		if(TeamManager.Instance != null)
-		{
-			TeamManager.Instance.AddPlayer( (int)m_ID, this);
-		}
+		get {return m_Grabber;}
 	}
 
 	public void SetActiveCharacter(bool a_IsRunnerActive)

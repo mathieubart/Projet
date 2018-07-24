@@ -5,10 +5,13 @@ using UnityEngine.UI;
 
 public class Team
 {
+	public bool IsRunner;
 	public float GameScore; 
 	public int LevelScore;
 	public Player Player01;
+	public GameObject Runner;
 	public Player Player02;
+	public GameObject Grabber;
 }
 
 public class TeamManager : MonoBehaviour 
@@ -16,6 +19,33 @@ public class TeamManager : MonoBehaviour
     [SerializeField]
     private List<Player> m_PlayerPrefabs;
 	private List<Team> m_Teams = new List<Team>();
+
+	public Runner Runner(int a_ID)
+	{
+		switch (a_ID)
+		{
+			case 1:
+			case 3:
+			{
+				return m_Teams[0].Runner.GetComponentInChildren<Runner>();
+			}
+			case 2:
+			case 4:
+			{
+				return m_Teams[1].Runner.GetComponentInChildren<Runner>();
+			}
+		}
+		return null;
+	}
+
+/* 
+	public Grabber Grabber(int a_ID)
+	{
+		return m_Grabbers[a_ID].GetComponent<Grabber>();
+	}
+	*/
+
+	private List<Vector3> m_SpawnPositions = new List<Vector3>();
 
 	private static TeamManager m_Instance;
 	public static TeamManager Instance
@@ -36,33 +66,16 @@ public class TeamManager : MonoBehaviour
 		DontDestroyOnLoad(gameObject);	
 	}
 
-	public void AddPlayer(int a_ID, Player a_Player)
+	private void Start()
 	{
-		switch (a_ID)
-		{
-			case 1:
-			{
-				m_Teams[0].Player01 = a_Player;
-				break;
-			}			
-			case 2:
-			{
-				m_Teams[1].Player01 = a_Player;
-				break;
-			}
-			case 3:
-			{
-				m_Teams[0].Player02 = a_Player;
-				break;
-			}			
-			case 4:
-			{
-				m_Teams[1].Player02 = a_Player;
-				break;
-			}
-		}
-	}
+		m_Teams.Add(new Team());
+		m_Teams[0].Player01 = m_PlayerPrefabs[0];
+		m_Teams[0].Player02 = m_PlayerPrefabs[2];
 
+		m_Teams.Add(new Team());		
+		m_Teams[1].Player01 = m_PlayerPrefabs[1];
+		m_Teams[1].Player02 = m_PlayerPrefabs[3];
+	}
 
 	//Assign a random character to the teams players.
 	public void SetRandomCharacters()
@@ -70,10 +83,7 @@ public class TeamManager : MonoBehaviour
 		bool runnerIsActive = Random.Range(0, 2) == 0;
 		for(int i = 0; i < m_Teams.Count; i++)
 		{
-			m_Teams[i].Player01.gameObject.SetActive(true);
-			m_Teams[i].Player02.gameObject.SetActive(true);	
-			m_Teams[i].Player01.SetActiveCharacter(runnerIsActive);
-			m_Teams[i].Player02.SetActiveCharacter(!runnerIsActive);
+			m_Teams[i].IsRunner = runnerIsActive;
 
 			runnerIsActive = !runnerIsActive;
 		}
@@ -84,21 +94,86 @@ public class TeamManager : MonoBehaviour
 	{
 		for(int i = 0; i < m_Teams.Count; i++)
 		{
-			m_Teams[i].Player01.gameObject.SetActive(true);
-			m_Teams[i].Player02.gameObject.SetActive(true);	
-			m_Teams[i].Player01.SwitchActiveCharacter();
-			m_Teams[i].Player02.SwitchActiveCharacter();			
+			m_Teams[i].IsRunner = !m_Teams[i].IsRunner;
 		}
 	}
 
-	//Set Unactive All characters in the Scene
-	public void DesactivateCharacters()
+	//instantiate all characters in the scene
+	public void CreateCharacters()
+	{
+		int spawnIndex = 0;
+		Vector3 spawnPos = Vector3.zero;
+
+		for(int i = 0; i < m_Teams.Count; i++)
+		{
+			spawnPos = GetSpawnPos(spawnIndex);
+			spawnIndex++;
+
+			if(m_Teams[i].IsRunner)
+			{
+				m_Teams[i].Runner = Instantiate(m_Teams[i].Player01.Runner, spawnPos, Quaternion.identity);
+				m_Teams[i].Runner.GetComponentInChildren<Character>().SetID((PlayerID)m_Teams[i].Player01.ID);
+
+				spawnPos = GetSpawnPos(spawnIndex);
+				spawnIndex++;
+
+				m_Teams[i].Grabber = Instantiate(m_Teams[i].Player02.Grabber, spawnPos, Quaternion.identity);
+				m_Teams[i].Grabber.GetComponentInChildren<Character>().SetID((PlayerID)m_Teams[i].Player02.ID);		
+			}
+			else
+			{
+				m_Teams[i].Grabber = Instantiate(m_Teams[i].Player01.Grabber, spawnPos, Quaternion.identity);
+				m_Teams[i].Grabber.GetComponentInChildren<Character>().SetID((PlayerID)m_Teams[i].Player01.ID);
+							
+				spawnPos = GetSpawnPos(spawnIndex);
+				spawnIndex++;
+
+				m_Teams[i].Runner = Instantiate(m_Teams[i].Player02.Runner, spawnPos, Quaternion.identity);
+				m_Teams[i].Runner.GetComponentInChildren<Character>().SetID((PlayerID)m_Teams[i].Player02.ID);			
+			}		
+		}
+	}
+
+	public void SetSpawnPos(Vector3 a_SpawnPos)
+	{
+		m_SpawnPositions.Add(a_SpawnPos);
+	}
+
+	private Vector3 GetSpawnPos(int a_Index)
+	{
+		if(m_SpawnPositions.Count >= a_Index)
+		{
+			return m_SpawnPositions[a_Index];
+		}
+		return Vector3.zero;
+	}
+
+	public void ResetSpawnPos()
+	{
+		m_SpawnPositions.Clear();
+	}
+
+	//Destroy all characters in the scene
+	public void DeleteCharacters()
 	{
 		for(int i = 0; i < m_Teams.Count; i++)
 		{
-			m_Teams[i].Player01.gameObject.SetActive(false);
-			m_Teams[i].Player02.gameObject.SetActive(false);		
+			Destroy(m_Teams[i].Runner);
+			Destroy(m_Teams[i].Grabber);
 		}
+		/* 
+		for(int i = 0; i < m_Runners.Count; i++)
+		{
+			Destroy(m_Runners[i]);	
+		}
+		m_Runners.Clear();
+
+		for(int i = 0; i < m_Grabbers.Count; i++)
+		{
+			Destroy(m_Grabbers[i]);	
+		}
+		m_Grabbers.Clear();
+		*/
 	}
 
 	public float GetGameScore(int a_Team) 

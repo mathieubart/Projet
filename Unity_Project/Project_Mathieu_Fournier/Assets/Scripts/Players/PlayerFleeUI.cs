@@ -36,18 +36,23 @@ public class PlayerFleeUI : MonoBehaviour
 		m_UIBoot01.SetActive(false);
 		m_UIBoot02.SetActive(false);
 		*/
-        if(TeamManager.Instance != null)
+
+		SetText(0);
+	}
+
+	public void Init()
+	{
+	    if(TeamManager.Instance != null)
         {
-            if(TeamManager.Instance.GetRunner((int)m_ID) != null)
+            if(TeamManager.Instance.Runner((int)m_ID) != null)
             {
                 Runner player;
-                player = TeamManager.Instance.GetRunner((int)m_ID);
+                player = TeamManager.Instance.Runner((int)m_ID);
                 player.OnPointChanged += SetText;
 				player.OnPowerupAdded += AddPowerup;
 				player.OnPowerupRemoved += RemovePowerUp;
             }
-        }
-		SetText(0);
+        }	
 	}
 
 	private void SetText(int a_Number)

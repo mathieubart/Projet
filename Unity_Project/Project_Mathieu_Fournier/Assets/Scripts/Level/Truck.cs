@@ -9,9 +9,23 @@ public class Truck : MonoBehaviour
 	[Range(0, 1)]
 	private int m_TeamAssigned;
 
+	[SerializeField]
+	private Transform m_Spawn01;
+	public Vector3 GetSpawn01Pos()
+	{
+		return m_Spawn01.position;
+	}
+
+	[SerializeField]
+	private Transform m_Spawn02;
+	public Vector3 GetSpawn02Pos()
+	{
+		return m_Spawn02.position;
+	}
+
 	private void OnTriggerEnter(Collider aCol)
 	{	
-		if(aCol.name == "CharacterFlee" )
+		if(aCol.name == "Runner" )
 		{
 			int points = aCol.GetComponent<Runner>().GetPoints();
 			TeamManager.Instance.ModifyLevelScore(m_TeamAssigned, points);

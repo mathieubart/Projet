@@ -40,16 +40,16 @@ public class LevelManager : MonoBehaviour
 
 	public void ChangeScene(EScenes a_Scene)
 	{
-		/* 
-        if(SceneManager.GetActiveScene().name == "StartMenu")
+        if(SceneManager.GetActiveScene().buildIndex == (int)EScenes.StartMenu)
         {
             TeamManager.Instance.SetRandomCharacters();
         }
-        else if(SceneManager.GetActiveScene().name == "Levels")
-        {
-            TeamManager.Instance.SwitchCharacters();
-        }
-*/
+		else if(SceneManager.GetActiveScene().buildIndex == (int)EScenes.Levels)
+		{
+            TeamManager.Instance.SwitchCharacters();	
+			TeamManager.Instance.DeleteCharacters();	
+		}
+
 		StartCoroutine(FadeInScenes(a_Scene));
 	}
 
@@ -69,12 +69,26 @@ public class LevelManager : MonoBehaviour
                 }            
 			case (int)EScenes.MainMenu:
                 {
-                    
+					TeamManager.Instance.ResetSpawnPos();          
                     //AudioManager.Instance.SwitchMusic("XXYYXX - Rad Racer", 0.1f);
                     break;
                 }
 			case (int)EScenes.Levels:
                 {
+					Truck[] trucks = FindObjectsOfType<Truck>();
+					for(int i = 0; i < trucks.Length; i++)
+					{
+						TeamManager.Instance.SetSpawnPos(trucks[i].GetSpawn01Pos());
+						TeamManager.Instance.SetSpawnPos(trucks[i].GetSpawn02Pos());
+					}
+
+					TeamManager.Instance.CreateCharacters();
+
+					PlayerFleeUI[] UIs = FindObjectsOfType<PlayerFleeUI>();
+					for(int i = 0; i < UIs.Length; i++)
+					{
+						UIs[i].Init();
+					}
                     //AudioManager.Instance.SwitchMusic("XXYYXX - Rad Racer", 0.1f);
                     break;
                 }            
